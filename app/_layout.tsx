@@ -2,6 +2,10 @@
 import { useFonts } from 'expo-font'
 import { SplashScreen, Stack } from 'expo-router'
 import { useEffect } from 'react'
+import { PaperProvider } from 'react-native-paper'
+
+import { reactPaperTheme } from '@/lib/react-paper'
+import '@/lib/date-fns'
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync()
@@ -23,14 +27,16 @@ const RootLayout = () => {
   }
 
   return (
-    <Stack
-      screenOptions={{
-        headerShown: false,
-      }}
-    >
-      <Stack.Screen name="index" options={{ headerShown: false }} />
-      <Stack.Screen name="profile" options={{ headerShown: false }} />
-    </Stack>
+    <PaperProvider theme={reactPaperTheme}>
+      <Stack
+        screenOptions={{
+          headerShown: false,
+        }}
+      >
+        <Stack.Screen name="(home)" options={{ headerShown: false }} />
+        <Stack.Screen name="(profile)" options={{ headerShown: false }} />
+      </Stack>
+    </PaperProvider>
   )
 }
 
