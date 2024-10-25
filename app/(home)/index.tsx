@@ -43,9 +43,8 @@ const styles = StyleSheet.create({
     height: 140,
     marginEnd: 10,
   },
-  workoutTitle: {
-    /* color: 'white', */
-    marginBottom: 'auto',
+  workoutCta: {
+    marginTop: 'auto',
   },
 })
 
@@ -81,12 +80,11 @@ const Home = () => {
                 source={require('@/assets/images/upper1.png')}
               />
               <View>
-                <Text variant="headlineLarge" style={styles.workoutTitle}>
-                  Upper 1
-                </Text>
+                <Text variant="headlineLarge">Upper 1</Text>
                 <Button
                   mode="contained"
                   textColor={COLORS.secondary}
+                  style={styles.workoutCta}
                   onPress={openModal}
                 >
                   Noter mes perfs
@@ -104,15 +102,15 @@ const Home = () => {
                 source={require('@/assets/images/lower.png')}
               />
               <View>
-                <Text variant="headlineLarge" style={styles.workoutTitle}>
-                  Lower
-                </Text>
+                <Text variant="headlineLarge">Lower</Text>
+                <Text variant="bodyLarge">12/12/2024</Text>
                 <Button
                   mode="contained"
                   textColor={COLORS.secondary}
                   onPress={openModal}
+                  style={styles.workoutCta}
                 >
-                  Changer mes perfs
+                  Voir mes perfs
                 </Button>
               </View>
             </Surface>

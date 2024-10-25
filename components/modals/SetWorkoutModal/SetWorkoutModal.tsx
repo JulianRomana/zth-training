@@ -58,8 +58,8 @@ const SetWorkoutModal = ({ workout }: SetWorkoutModalProps) => {
       <Text variant="headlineLarge">{title}</Text>
       <Text variant="bodyLarge">{date}</Text>
       <ScrollView>
-        {exercices.map(({ name, sets }) => (
-          <Surface style={styles.card} elevation={2}>
+        {exercices.map(({ name, sets }, index) => (
+          <Surface style={styles.card} elevation={2} key={`${name}-${index}`}>
             <Text variant="headlineSmall">{name}</Text>
             <View style={styles.inputWrapper}>
               <Text variant="bodyLarge">Poid</Text>
