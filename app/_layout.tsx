@@ -5,10 +5,11 @@ import { useEffect } from 'react'
 import { PaperProvider } from 'react-native-paper'
 
 import { reactPaperTheme } from '@/lib/react-paper'
-import '@/lib/date-fns'
+import { initDefaultLocale } from '@/lib/date-fns'
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync()
+initDefaultLocale()
 
 const RootLayout = () => {
   const [loaded] = useFonts({

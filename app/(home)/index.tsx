@@ -1,9 +1,16 @@
-import { format } from 'date-fns'
 import { Link, useRouter } from 'expo-router'
-import { StyleSheet, SafeAreaView, View, Image, Pressable } from 'react-native'
-import { Button, Text, IconButton } from 'react-native-paper'
-import { capitalize } from 'lodash-es'
-import { COLORS } from '@/constants/Colors'
+import {
+  StyleSheet,
+  SafeAreaView,
+  View,
+  Image,
+  Pressable,
+  ScrollView,
+} from 'react-native'
+import { Button, Text, IconButton, Surface } from 'react-native-paper'
+import { COLORS } from '@/constants/colors'
+import { getCurrentDay } from '@/lib/date-fns'
+import { WORKOUTS } from '@/constants/workouts'
 
 const styles = StyleSheet.create({
   wrapper: {
@@ -17,6 +24,7 @@ const styles = StyleSheet.create({
   },
   currentDayWorkout: {
     marginTop: 50,
+    marginBottom: 70,
   },
   workoutCard: {
     flexDirection: 'row',
@@ -24,11 +32,11 @@ const styles = StyleSheet.create({
     paddingVertical: 24,
     borderRadius: 14,
     marginTop: 20,
-    backgroundColor: COLORS.secondary,
+    /*     backgroundColor: COLORS.secondary,
     shadowColor: '#171717',
     shadowOffset: { width: -2, height: 4 },
     shadowOpacity: 0.2,
-    shadowRadius: 3,
+    shadowRadius: 3, */
   },
   workoutLogo: {
     width: 120,
@@ -36,52 +44,81 @@ const styles = StyleSheet.create({
     marginEnd: 10,
   },
   workoutTitle: {
-    color: 'white',
+    /* color: 'white', */
     marginBottom: 'auto',
   },
 })
 
-const currentWeekDay = capitalize(format(new Date(), 'eeee'))
-const currentDay = format(new Date(), 'dd MMMM yyyy')
-
 const Home = () => {
   const { push } = useRouter()
-  const openModal = () => push('/(home)/modal')
+  const openModal = () =>
+    push({
+      pathname: '/(home)/modal',
+      params: {
+        workout: 'UpperA',
+      },
+    })
+  const { weekDay, date } = getCurrentDay()
 
   return (
     <SafeAreaView style={styles.wrapper}>
-      <View>
-        <View style={styles.header}>
-          <Text variant="headlineLarge">{currentWeekDay}</Text>
-          <Link href="/(profile)" asChild>
-            <IconButton icon="account" mode="contained" />
-          </Link>
-        </View>
-        <Text variant="bodyLarge">{currentDay}</Text>
-      </View>
-      <View style={styles.currentDayWorkout}>
-        <Text variant="headlineMedium">Séance du jour</Text>
-        <Pressable onPress={openModal}>
-          <View style={styles.workoutCard}>
-            <Image
-              style={styles.workoutLogo}
-              source={require('@/assets/images/upper1.png')}
-            />
-            <View>
-              <Text variant="headlineLarge" style={styles.workoutTitle}>
-                Upper 1
-              </Text>
-              <Button
-                mode="contained"
-                textColor={COLORS.secondary}
-                onPress={openModal}
-              >
-                Noter mes perfs
-              </Button>
-            </View>
+      <ScrollView>
+        <View>
+          <View style={styles.header}>
+            <Text variant="headlineLarge">{weekDay}</Text>
+            <Link href="/(profile)" asChild>
+              <IconButton icon="account" mode="contained" />
+            </Link>
           </View>
-        </Pressable>
-      </View>
+          <Text variant="bodyLarge">{date}</Text>
+        </View>
+        <View style={styles.currentDayWorkout}>
+          <Text variant="headlineMedium">Séance du jour</Text>
+          <Pressable onPress={openModal}>
+            <Surface style={styles.workoutCard} elevation={2}>
+              <Image
+                style={styles.workoutLogo}
+                source={require('@/assets/images/upper1.png')}
+              />
+              <View>
+                <Text variant="headlineLarge" style={styles.workoutTitle}>
+                  Upper 1
+                </Text>
+                <Button
+                  mode="contained"
+                  textColor={COLORS.secondary}
+                  onPress={openModal}
+                >
+                  Noter mes perfs
+                </Button>
+              </View>
+            </Surface>
+          </Pressable>
+        </View>
+        <View style={styles.currentDayWorkout}>
+          <Text variant="headlineMedium">Séances passées</Text>
+          <Pressable onPress={openModal}>
+            <Surface style={styles.workoutCard} elevation={1}>
+              <Image
+                style={styles.workoutLogo}
+                source={require('@/assets/images/lower.png')}
+              />
+              <View>
+                <Text variant="headlineLarge" style={styles.workoutTitle}>
+                  Lower
+                </Text>
+                <Button
+                  mode="contained"
+                  textColor={COLORS.secondary}
+                  onPress={openModal}
+                >
+                  Changer mes perfs
+                </Button>
+              </View>
+            </Surface>
+          </Pressable>
+        </View>
+      </ScrollView>
     </SafeAreaView>
   )
 }

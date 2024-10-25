@@ -1,5 +1,5 @@
 import { MD3LightTheme as DefaultTheme } from 'react-native-paper'
-import { COLORS } from '@/constants/Colors'
+import { COLORS } from '@/constants/colors'
 
 const reactPaperTheme: typeof DefaultTheme = {
   ...DefaultTheme,
