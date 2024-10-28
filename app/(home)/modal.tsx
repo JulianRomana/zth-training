@@ -1,5 +1,4 @@
 import { useRoute } from '@react-navigation/native'
-import { useRouter } from 'expo-router'
 import { SetWorkoutModal } from '@/components/modals/SetWorkoutModal/SetWorkoutModal'
 import { WORKOUTS } from '@/constants/workouts'
 

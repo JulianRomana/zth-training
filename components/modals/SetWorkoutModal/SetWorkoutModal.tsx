@@ -1,10 +1,12 @@
 import { StyleSheet, View, ScrollView, TextInput } from 'react-native'
 import { Button, Surface, Text } from 'react-native-paper'
 import { useState } from 'react'
+import { useQuery, useRealm } from '@realm/react'
 import { COLORS } from '@/constants/colors'
 import { getCurrentDay } from '@/lib/date-fns'
 
 import { WORKOUTS } from '@/constants/workouts'
+import { Workout } from '@/db'
 
 const styles = StyleSheet.create({
   wrapper: {
@@ -52,13 +54,15 @@ const SetWorkoutModal = ({ workout }: SetWorkoutModalProps) => {
   const [secondSet, setSecondSet] = useState('')
   const [thirdSet, setThirdSet] = useState('')
   const { title, exercices } = WORKOUTS[workout]
-
+  const realm = useRealm()
+  const tasks = useQuery(Workout)
+  console.log(realm)
   return (
     <View style={styles.wrapper}>
       <Text variant="headlineLarge">{title}</Text>
       <Text variant="bodyLarge">{date}</Text>
       <ScrollView>
-        {exercices.map(({ name, sets }, index) => (
+        {/* {exercices.map(({ name, sets }, index) => (
           <Surface style={styles.card} elevation={2} key={`${name}-${index}`}>
             <Text variant="headlineSmall">{name}</Text>
             <View style={styles.inputWrapper}>
@@ -86,7 +90,7 @@ const SetWorkoutModal = ({ workout }: SetWorkoutModalProps) => {
               </View>
             ))}
           </Surface>
-        ))}
+        ))} */}
       </ScrollView>
       <Button
         mode="contained"
