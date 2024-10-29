@@ -1,11 +1,11 @@
 enum WorkoutTitle {
-  UpperA = 'UpperA',
-  UpperB = 'UpperB',
-  Lower = 'Lower',
+  UPPER_A = 'UpperA',
+  UPPER_B = 'UpperB',
+  LOWER = 'Lower',
 }
 
 const WORKOUTS = {
-  [WorkoutTitle.UpperA]: {
+  [WorkoutTitle.UPPER_A]: {
     title: 'Upper A',
     exercices: {
       first: {
@@ -14,6 +14,7 @@ const WORKOUTS = {
         firstSet: '',
         secondSet: '',
         thirdSet: '',
+        weight: '',
       },
       second: {
         name: 'Tractions lestées',
@@ -21,6 +22,7 @@ const WORKOUTS = {
         firstSet: '',
         secondSet: '',
         thirdSet: '',
+        weight: '',
       },
       third: {
         name: 'Élévations Frontales (pecs)',
@@ -28,6 +30,7 @@ const WORKOUTS = {
         firstSet: '',
         secondSet: '',
         thirdSet: '',
+        weight: '',
       },
       fourth: {
         name: 'Curl incliné haltères',
@@ -35,6 +38,7 @@ const WORKOUTS = {
         firstSet: '',
         secondSet: '',
         thirdSet: '',
+        weight: '',
       },
       fifth: {
         name: 'Élévations latérales',
@@ -42,10 +46,11 @@ const WORKOUTS = {
         firstSet: '',
         secondSet: '',
         thirdSet: '',
+        weight: '',
       },
     },
   },
-  [WorkoutTitle.Lower]: {
+  [WorkoutTitle.LOWER]: {
     title: 'Lower',
     exercices: {
       first: {
@@ -54,6 +59,7 @@ const WORKOUTS = {
         firstSet: '',
         secondSet: '',
         thirdSet: '',
+        weight: '',
       },
       second: {
         name: 'Romanian deadlift / Fentes',
@@ -61,6 +67,7 @@ const WORKOUTS = {
         firstSet: '',
         secondSet: '',
         thirdSet: '',
+        weight: '',
       },
       third: {
         name: 'Leg curl superset - Leg extension',
@@ -68,6 +75,7 @@ const WORKOUTS = {
         firstSet: '',
         secondSet: '',
         thirdSet: '',
+        weight: '',
       },
       fourth: {
         name: 'Extensions mollets',
@@ -75,6 +83,7 @@ const WORKOUTS = {
         firstSet: '',
         secondSet: '',
         thirdSet: '',
+        weight: '',
       },
       fifth: {
         name: 'Upright row penché',
@@ -82,46 +91,52 @@ const WORKOUTS = {
         firstSet: '',
         secondSet: '',
         thirdSet: '',
+        weight: '',
       },
     },
   },
-  [WorkoutTitle.UpperB]: {
+  [WorkoutTitle.UPPER_B]: {
     title: 'Upper B',
     exercices: {
       first: {
-        name: 'Développé couché incliné',
+        name: 'Overhead press',
         reps: ['6', '8', '10'],
         firstSet: '',
         secondSet: '',
         thirdSet: '',
+        weight: '',
       },
       second: {
-        name: 'Tractions lestées',
+        name: 'Développé couché',
         reps: ['6', '8', '10'],
         firstSet: '',
         secondSet: '',
         thirdSet: '',
+        weight: '',
       },
       third: {
-        name: 'Élévations Frontales (pecs)',
-        reps: ['15', '15', '15'],
-        firstSet: '',
-        secondSet: '',
-        thirdSet: '',
-      },
-      fourth: {
-        name: 'Curl incliné haltères',
+        name: 'Tractions prise neutre',
         reps: ['12', '12', '12'],
         firstSet: '',
         secondSet: '',
         thirdSet: '',
+        weight: '',
       },
-      fifth: {
-        name: 'Élévations latérales',
-        reps: ['20', '15', '10'],
+      fourth: {
+        name: 'Oiseau assis prise neutre',
+        reps: ['15', '15', '15'],
         firstSet: '',
         secondSet: '',
         thirdSet: '',
+        weight: '',
+      },
+      fifth: {
+        name: 'Upright row',
+        reps: ['15', '12', '10'],
+        firstSet: '',
+        secondSet: '',
+        thirdSet: '',
+        weight: '',
       },
     },
   },

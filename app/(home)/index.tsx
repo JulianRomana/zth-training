@@ -75,7 +75,7 @@ const Home = () => {
         </View>
         <View style={styles.currentDayWorkout}>
           <Text variant="headlineMedium">Séance du jour</Text>
-          <Pressable onPress={() => openModal(WorkoutTitle.UpperA)}>
+          <Pressable onPress={() => openModal(WorkoutTitle.UPPER_A)}>
             <Surface style={styles.workoutCard} elevation={2}>
               <Image
                 style={styles.workoutLogo}
@@ -87,7 +87,7 @@ const Home = () => {
                   mode="contained"
                   textColor={COLORS.secondary}
                   style={styles.workoutCta}
-                  onPress={() => openModal(WorkoutTitle.UpperA)}
+                  onPress={() => openModal(WorkoutTitle.UPPER_A)}
                 >
                   Noter mes perfs
                 </Button>
@@ -109,7 +109,27 @@ const Home = () => {
                 <Button
                   mode="contained"
                   textColor={COLORS.secondary}
-                  onPress={() => openModal(WorkoutTitle.Lower)}
+                  onPress={() => openModal(WorkoutTitle.LOWER)}
+                  style={styles.workoutCta}
+                >
+                  Voir mes perfs
+                </Button>
+              </View>
+            </Surface>
+          </Pressable>
+          <Pressable onPress={() => openModal(WorkoutTitle.UPPER_B)}>
+            <Surface style={styles.workoutCard} elevation={1}>
+              <Image
+                style={styles.workoutLogo}
+                source={require('@/assets/images/upper1.png')}
+              />
+              <View>
+                <Text variant="headlineLarge">Upper B</Text>
+                <Text variant="bodyLarge">01/12/2024</Text>
+                <Button
+                  mode="contained"
+                  textColor={COLORS.secondary}
+                  onPress={() => openModal(WorkoutTitle.UPPER_B)}
                   style={styles.workoutCta}
                 >
                   Voir mes perfs

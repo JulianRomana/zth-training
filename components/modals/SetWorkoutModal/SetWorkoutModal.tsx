@@ -1,7 +1,8 @@
 import { ScrollView, StyleSheet, View } from 'react-native'
 import { Button, Surface, Text, TextInput } from 'react-native-paper'
 import { useState } from 'react'
-import { set } from 'lodash-es'
+import { cloneDeep, set } from 'lodash-es'
+import { useRouter } from 'expo-router'
 import { COLORS } from '@/constants/colors'
 import { getCurrentDay } from '@/lib/date-fns'
 
@@ -49,9 +50,8 @@ interface SetWorkoutModalProps {
 
 const SetWorkoutModal = ({ workoutTitle }: SetWorkoutModalProps) => {
   const { date } = getCurrentDay()
-  const [weight, setWeight] = useState('')
 
-  const [workout, setWorkout] = useState(WORKOUTS[workoutTitle])
+  const [workout, setWorkout] = useState(cloneDeep(WORKOUTS[workoutTitle]))
 
   const workoutEntries = Object.entries(workout.exercices)
 
@@ -59,7 +59,8 @@ const SetWorkoutModal = ({ workoutTitle }: SetWorkoutModalProps) => {
     setWorkout((oldVal) => set({ ...oldVal }, setPath, value))
   }
 
-  const saveWorkout = () => {}
+  const { back } = useRouter()
+  const saveWorkout = back
 
   return (
     <View style={styles.wrapper}>
@@ -72,9 +73,11 @@ const SetWorkoutModal = ({ workoutTitle }: SetWorkoutModalProps) => {
             <View style={styles.inputWrapper}>
               <Text variant="bodyLarge">Poid</Text>
               <TextInput
-                value={weight}
+                value={exerciceInformations.weight}
                 keyboardType="numeric"
-                onChangeText={setWeight}
+                onChangeText={(value) =>
+                  setInputValue(value, `exercices.${exerciceNumber}.weight`)
+                }
                 style={styles.input}
               />
               <Text variant="bodyLarge">kg</Text>
@@ -92,7 +95,7 @@ const SetWorkoutModal = ({ workoutTitle }: SetWorkoutModalProps) => {
               />
               <Text variant="bodyLarge">{exerciceInformations.reps[0]}</Text>
               <Text variant="bodySmall" style={styles.weightAnnotation}>
-                ({weight}kg)
+                ({exerciceInformations.weight}kg)
               </Text>
             </View>
             <View style={styles.inputWrapper}>
@@ -107,7 +110,7 @@ const SetWorkoutModal = ({ workoutTitle }: SetWorkoutModalProps) => {
               />
               <Text variant="bodyLarge">{exerciceInformations.reps[1]}</Text>
               <Text variant="bodySmall" style={styles.weightAnnotation}>
-                ({weight}kg)
+                ({exerciceInformations.weight}kg)
               </Text>
             </View>
             <View style={styles.inputWrapper}>
@@ -122,7 +125,7 @@ const SetWorkoutModal = ({ workoutTitle }: SetWorkoutModalProps) => {
               />
               <Text variant="bodyLarge">{exerciceInformations.reps[2]}</Text>
               <Text variant="bodySmall" style={styles.weightAnnotation}>
-                ({weight}kg)
+                ({exerciceInformations.weight}kg)
               </Text>
             </View>
           </Surface>
@@ -137,41 +140,6 @@ const SetWorkoutModal = ({ workoutTitle }: SetWorkoutModalProps) => {
       >
         Sauvgarder mes perfs
       </Button>
-      {/* <ComponentForm
-        workoutName={title}
-        date={date}
-        saveWorkout={saveWorkout}
-        exercices={exercicesWithState}
-      /> */}
-      {/* {exercices.map(({ name, sets }, index) => (
-          <Surface style={styles.card} elevation={2} key={`${name}-${index}`}>
-            <Text variant="headlineSmall">{name}</Text>
-            <View style={styles.inputWrapper}>
-              <Text variant="bodyLarge">Poid</Text>
-              <TextInput
-                value={weight}
-                onChangeText={setWeight}
-                style={styles.input}
-              />
-              <Text variant="bodyLarge">kg</Text>
-            </View>
-            <View style={styles.separator} />
-            {sets.map((reps, index) => (
-              <View style={styles.inputWrapper}>
-                <Text variant="bodyLarge">Série {index + 1}</Text>
-                <TextInput
-                  value={firstSet}
-                  onBlur={() => setFirstSet(firstSet)}
-                  style={styles.input}
-                />
-                <Text variant="bodyLarge">{reps} </Text>
-                <Text variant="bodySmall" style={styles.weightAnnotation}>
-                  ({weight}kg)
-                </Text>
-              </View>
-            ))}
-          </Surface>
-        ))} */}
     </View>
   )
 }

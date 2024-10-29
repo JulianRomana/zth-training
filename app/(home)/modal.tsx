@@ -4,9 +4,9 @@ import { WORKOUTS } from '@/constants/workouts'
 
 /* https://github.com/expo/expo/issues/26922 */
 
-const WorkoutModal = (props) => {
+const WorkoutModal = () => {
   const { params } = useRoute()
-  console.log(params)
+
   return (
     <SetWorkoutModal
       workoutTitle={params.workoutTitle as keyof typeof WORKOUTS}
