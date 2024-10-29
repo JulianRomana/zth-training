@@ -43,16 +43,13 @@ interface UpperAProps {
   date: string
   exercices: {
     name: string
-    weight: number
-    setWeight: Dispatch<number>
-    firstSet: number
-    setFirstSet: Dispatch<number>
-    secondSet: number
-    setSecondSet: Dispatch<number>
-    thirdSet: number
-    setThirdSet: Dispatch<number>
+    weight: string
+    reps: string[]
+    firstSet: string
+    secondSet: string
+    thirdSet: string
   }[]
-  saveWorkout: Dispatch<string>
+  saveWorkout: () => void
 }
 
 const UpperA = ({ workoutName, exercices, saveWorkout, date }: UpperAProps) => (
@@ -61,23 +58,14 @@ const UpperA = ({ workoutName, exercices, saveWorkout, date }: UpperAProps) => (
     <Text variant="bodyLarge">{date}</Text>
     <ScrollView>
       {exercices.map(
-        ({
-          name,
-          weight,
-          setWeight,
-          firstSet,
-          setFirstSet,
-          secondSet,
-          setSecondSet,
-          thirdSet,
-          setThirdSet,
-        }) => (
-          <Surface style={styles.card} elevation={2}>
+        ({ name, weight, reps, firstSet, secondSet, thirdSet }) => (
+          <Surface style={styles.card} elevation={2} key={name}>
             <Text variant="headlineSmall">{name}</Text>
             <View style={styles.inputWrapper}>
               <Text variant="bodyLarge">Poid</Text>
               <TextInput
                 value={weight}
+                keyboardType="numeric"
                 onChangeText={setWeight}
                 style={styles.input}
               />
@@ -88,10 +76,37 @@ const UpperA = ({ workoutName, exercices, saveWorkout, date }: UpperAProps) => (
               <Text variant="bodyLarge">Série 1</Text>
               <TextInput
                 value={firstSet}
+                keyboardType="numeric"
                 onBlur={() => setFirstSet(firstSet)}
                 style={styles.input}
               />
-              <Text variant="bodyLarge">{reps} </Text>
+              <Text variant="bodyLarge">{reps[0]} </Text>
+              <Text variant="bodySmall" style={styles.weightAnnotation}>
+                ({weight}kg)
+              </Text>
+            </View>
+            <View style={styles.inputWrapper}>
+              <Text variant="bodyLarge">Série 1</Text>
+              <TextInput
+                value={secondSet}
+                keyboardType="numeric"
+                onBlur={() => setSecondSet(firstSet)}
+                style={styles.input}
+              />
+              <Text variant="bodyLarge">{reps[1]} </Text>
+              <Text variant="bodySmall" style={styles.weightAnnotation}>
+                ({weight}kg)
+              </Text>
+            </View>
+            <View style={styles.inputWrapper}>
+              <Text variant="bodyLarge">Série 2</Text>
+              <TextInput
+                value={thirdSet}
+                keyboardType="numeric"
+                onBlur={() => setThirdSet(firstSet)}
+                style={styles.input}
+              />
+              <Text variant="bodyLarge">{reps[2]} </Text>
               <Text variant="bodySmall" style={styles.weightAnnotation}>
                 ({weight}kg)
               </Text>
@@ -104,11 +119,11 @@ const UpperA = ({ workoutName, exercices, saveWorkout, date }: UpperAProps) => (
       mode="contained"
       textColor={COLORS.secondary}
       style={styles.button}
-      onPress={() => saveWorkout('a')}
+      onPress={saveWorkout}
     >
       Sauvgarder mes perfs
     </Button>
   </View>
 )
 
-export default UpperA
+export { UpperA }

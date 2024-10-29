@@ -7,7 +7,11 @@ import { WORKOUTS } from '@/constants/workouts'
 const WorkoutModal = (props) => {
   const { params } = useRoute()
   console.log(params)
-  return <SetWorkoutModal workout={params.workout as keyof typeof WORKOUTS} />
+  return (
+    <SetWorkoutModal
+      workoutTitle={params.workoutTitle as keyof typeof WORKOUTS}
+    />
+  )
 }
 
 export default WorkoutModal

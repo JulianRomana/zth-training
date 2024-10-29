@@ -10,7 +10,7 @@ import {
 import { Button, Text, IconButton, Surface } from 'react-native-paper'
 import { COLORS } from '@/constants/colors'
 import { getCurrentDay } from '@/lib/date-fns'
-import { WORKOUTS } from '@/constants/workouts'
+import { WorkoutTitle } from '@/constants/workouts'
 
 const styles = StyleSheet.create({
   wrapper: {
@@ -50,13 +50,15 @@ const styles = StyleSheet.create({
 
 const Home = () => {
   const { push } = useRouter()
-  const openModal = () =>
+
+  const openModal = (workoutTitle: WorkoutTitle) =>
     push({
       pathname: '/(home)/modal',
       params: {
-        workout: 'UpperA',
+        workoutTitle,
       },
     })
+
   const { weekDay, date } = getCurrentDay()
 
   return (
@@ -73,7 +75,7 @@ const Home = () => {
         </View>
         <View style={styles.currentDayWorkout}>
           <Text variant="headlineMedium">Séance du jour</Text>
-          <Pressable onPress={openModal}>
+          <Pressable onPress={() => openModal(WorkoutTitle.UpperA)}>
             <Surface style={styles.workoutCard} elevation={2}>
               <Image
                 style={styles.workoutLogo}
@@ -85,7 +87,7 @@ const Home = () => {
                   mode="contained"
                   textColor={COLORS.secondary}
                   style={styles.workoutCta}
-                  onPress={openModal}
+                  onPress={() => openModal(WorkoutTitle.UpperA)}
                 >
                   Noter mes perfs
                 </Button>
@@ -95,7 +97,7 @@ const Home = () => {
         </View>
         <View style={styles.currentDayWorkout}>
           <Text variant="headlineMedium">Séances passées</Text>
-          <Pressable onPress={openModal}>
+          <Pressable onPress={() => openModal(WorkoutTitle.LOWER)}>
             <Surface style={styles.workoutCard} elevation={1}>
               <Image
                 style={styles.workoutLogo}
@@ -107,7 +109,7 @@ const Home = () => {
                 <Button
                   mode="contained"
                   textColor={COLORS.secondary}
-                  onPress={openModal}
+                  onPress={() => openModal(WorkoutTitle.Lower)}
                   style={styles.workoutCta}
                 >
                   Voir mes perfs

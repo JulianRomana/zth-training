@@ -6,7 +6,6 @@ import { PaperProvider } from 'react-native-paper'
 
 import { reactPaperTheme } from '@/lib/react-paper'
 import { initDefaultLocale } from '@/lib/date-fns'
-import { RealmProvider } from '@realm/react'
 import { Workout } from '@/db'
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
@@ -30,18 +29,16 @@ const RootLayout = () => {
   }
 
   return (
-    <RealmProvider schema={[Workout]}>
-      <PaperProvider theme={reactPaperTheme}>
-        <Stack
-          screenOptions={{
-            headerShown: false,
-          }}
-        >
-          <Stack.Screen name="(home)" options={{ headerShown: false }} />
-          <Stack.Screen name="(profile)" options={{ headerShown: false }} />
-        </Stack>
-      </PaperProvider>
-    </RealmProvider>
+    <PaperProvider theme={reactPaperTheme}>
+      <Stack
+        screenOptions={{
+          headerShown: false,
+        }}
+      >
+        <Stack.Screen name="(home)" options={{ headerShown: false }} />
+        <Stack.Screen name="(profile)" options={{ headerShown: false }} />
+      </Stack>
+    </PaperProvider>
   )
 }
 

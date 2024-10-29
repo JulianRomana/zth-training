@@ -1,7 +1,6 @@
 import { Realm } from '@realm/react'
 
 type WorkoutName = 'Upper A' | 'Upper B' | 'Lower'
-
 class Workout extends Realm.Object {
   _id!: Realm.BSON.ObjectId
 

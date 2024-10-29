@@ -1,12 +1,11 @@
-import { StyleSheet, View, ScrollView, TextInput } from 'react-native'
-import { Button, Surface, Text } from 'react-native-paper'
+import { ScrollView, StyleSheet, View } from 'react-native'
+import { Button, Surface, Text, TextInput } from 'react-native-paper'
 import { useState } from 'react'
-import { useQuery, useRealm } from '@realm/react'
+import { set } from 'lodash-es'
 import { COLORS } from '@/constants/colors'
 import { getCurrentDay } from '@/lib/date-fns'
 
-import { WORKOUTS } from '@/constants/workouts'
-import { Workout } from '@/db'
+import { WORKOUTS, WorkoutTitle } from '@/constants/workouts'
 
 const styles = StyleSheet.create({
   wrapper: {
@@ -22,10 +21,11 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   input: {
-    height: 40,
+    height: 20,
     width: 40,
     margin: 12,
-    borderWidth: 1,
+    borderWidth: 0.2,
+    borderColor: COLORS.primary,
     marginLeft: 'auto',
     padding: 10,
   },
@@ -44,25 +44,106 @@ const styles = StyleSheet.create({
 })
 
 interface SetWorkoutModalProps {
-  workout: keyof typeof WORKOUTS
+  workoutTitle: WorkoutTitle
 }
 
-const SetWorkoutModal = ({ workout }: SetWorkoutModalProps) => {
+const SetWorkoutModal = ({ workoutTitle }: SetWorkoutModalProps) => {
   const { date } = getCurrentDay()
   const [weight, setWeight] = useState('')
-  const [firstSet, setFirstSet] = useState('')
-  const [secondSet, setSecondSet] = useState('')
-  const [thirdSet, setThirdSet] = useState('')
-  const { title, exercices } = WORKOUTS[workout]
-  const realm = useRealm()
-  const tasks = useQuery(Workout)
-  console.log(realm)
+
+  const [workout, setWorkout] = useState(WORKOUTS[workoutTitle])
+
+  const workoutEntries = Object.entries(workout.exercices)
+
+  const setInputValue = (value: string, setPath: string) => {
+    setWorkout((oldVal) => set({ ...oldVal }, setPath, value))
+  }
+
+  const saveWorkout = () => {}
+
   return (
     <View style={styles.wrapper}>
-      <Text variant="headlineLarge">{title}</Text>
+      <Text variant="headlineLarge">{workout.title}</Text>
       <Text variant="bodyLarge">{date}</Text>
       <ScrollView>
-        {/* {exercices.map(({ name, sets }, index) => (
+        {workoutEntries.map(([exerciceNumber, exerciceInformations]) => (
+          <Surface style={styles.card} elevation={2} key={exerciceNumber}>
+            <Text variant="headlineSmall">{exerciceInformations.name}</Text>
+            <View style={styles.inputWrapper}>
+              <Text variant="bodyLarge">Poid</Text>
+              <TextInput
+                value={weight}
+                keyboardType="numeric"
+                onChangeText={setWeight}
+                style={styles.input}
+              />
+              <Text variant="bodyLarge">kg</Text>
+            </View>
+            <View style={styles.separator} />
+            <View style={styles.inputWrapper}>
+              <Text variant="bodyLarge">Série 1</Text>
+              <TextInput
+                value={exerciceInformations.firstSet}
+                keyboardType="numeric"
+                onChangeText={(value) =>
+                  setInputValue(value, `exercices.${exerciceNumber}.firstSet`)
+                }
+                style={styles.input}
+              />
+              <Text variant="bodyLarge">{exerciceInformations.reps[0]}</Text>
+              <Text variant="bodySmall" style={styles.weightAnnotation}>
+                ({weight}kg)
+              </Text>
+            </View>
+            <View style={styles.inputWrapper}>
+              <Text variant="bodyLarge">Série 2</Text>
+              <TextInput
+                value={exerciceInformations.secondSet}
+                keyboardType="numeric"
+                onChangeText={(value) =>
+                  setInputValue(value, `exercices.${exerciceNumber}.secondSet`)
+                }
+                style={styles.input}
+              />
+              <Text variant="bodyLarge">{exerciceInformations.reps[1]}</Text>
+              <Text variant="bodySmall" style={styles.weightAnnotation}>
+                ({weight}kg)
+              </Text>
+            </View>
+            <View style={styles.inputWrapper}>
+              <Text variant="bodyLarge">Série 3</Text>
+              <TextInput
+                value={exerciceInformations.thirdSet}
+                keyboardType="numeric"
+                onChangeText={(value) =>
+                  setInputValue(value, `exercices.${exerciceNumber}.thirdSet`)
+                }
+                style={styles.input}
+              />
+              <Text variant="bodyLarge">{exerciceInformations.reps[2]}</Text>
+              <Text variant="bodySmall" style={styles.weightAnnotation}>
+                ({weight}kg)
+              </Text>
+            </View>
+          </Surface>
+        ))}
+      </ScrollView>
+
+      <Button
+        mode="contained"
+        textColor={COLORS.secondary}
+        style={styles.button}
+        onPress={saveWorkout}
+      >
+        Sauvgarder mes perfs
+      </Button>
+      {/* <ComponentForm
+        workoutName={title}
+        date={date}
+        saveWorkout={saveWorkout}
+        exercices={exercicesWithState}
+      /> */}
+      {/* {exercices.map(({ name, sets }, index) => (
           <Surface style={styles.card} elevation={2} key={`${name}-${index}`}>
             <Text variant="headlineSmall">{name}</Text>
             <View style={styles.inputWrapper}>
@@ -91,14 +172,6 @@ const SetWorkoutModal = ({ workout }: SetWorkoutModalProps) => {
             ))}
           </Surface>
         ))} */}
-      </ScrollView>
-      <Button
-        mode="contained"
-        textColor={COLORS.secondary}
-        style={styles.button}
-      >
-        Sauvgarder mes perfs
-      </Button>
     </View>
   )
 }
