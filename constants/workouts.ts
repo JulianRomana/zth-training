@@ -1,11 +1,53 @@
-enum WorkoutTitle {
+enum WorkoutType {
   UPPER_A = 'UpperA',
   UPPER_B = 'UpperB',
   LOWER = 'Lower',
 }
+interface Exercices {
+  first: {
+    name: string
+    reps: [string, string, string]
+    firstSet: string
+    secondSet: string
+    thirdSet: string
+    weight: string
+  }
+  second: {
+    name: string
+    reps: [string, string, string]
+    firstSet: string
+    secondSet: string
+    thirdSet: string
+    weight: string
+  }
+  third: {
+    name: string
+    reps: [string, string, string]
+    firstSet: string
+    secondSet: string
+    thirdSet: string
+    weight: string
+  }
+  fourth: {
+    name: string
+    reps: [string, string, string]
+    firstSet: string
+    secondSet: string
+    thirdSet: string
+    weight: string
+  }
+  fifth: {
+    name: string
+    reps: [string, string, string]
+    firstSet: string
+    secondSet: string
+    thirdSet: string
+    weight: string
+  }
+}
 
-const WORKOUTS = {
-  [WorkoutTitle.UPPER_A]: {
+const WORKOUTS: Record<WorkoutType, { title: string; exercices: Exercices }> = {
+  [WorkoutType.UPPER_A]: {
     title: 'Upper A',
     exercices: {
       first: {
@@ -50,7 +92,7 @@ const WORKOUTS = {
       },
     },
   },
-  [WorkoutTitle.LOWER]: {
+  [WorkoutType.LOWER]: {
     title: 'Lower',
     exercices: {
       first: {
@@ -95,7 +137,7 @@ const WORKOUTS = {
       },
     },
   },
-  [WorkoutTitle.UPPER_B]: {
+  [WorkoutType.UPPER_B]: {
     title: 'Upper B',
     exercices: {
       first: {
@@ -142,4 +184,4 @@ const WORKOUTS = {
   },
 }
 
-export { WORKOUTS, WorkoutTitle }
+export { WORKOUTS, WorkoutType, type Exercices }

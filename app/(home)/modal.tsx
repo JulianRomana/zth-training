@@ -1,16 +1,17 @@
-import { useRoute } from '@react-navigation/native'
-import { SetWorkoutModal } from '@/components/modals/SetWorkoutModal/SetWorkoutModal'
-import { WORKOUTS } from '@/constants/workouts'
+import { useLocalSearchParams } from 'expo-router'
+import { CreateWorkoutModal } from '@/components/modals/CreateWorkoutModal/CreateWorkoutModal'
+import { UpdateWorkoutModal } from '@/components/modals/UpdateWorkoutModal/UpdateWorkoutModal'
+import { WorkoutType } from '@/constants/workouts'
 
 /* https://github.com/expo/expo/issues/26922 */
 
 const WorkoutModal = () => {
-  const { params } = useRoute()
+  const params = useLocalSearchParams()
 
-  return (
-    <SetWorkoutModal
-      workoutTitle={params.workoutTitle as keyof typeof WORKOUTS}
-    />
+  return params?.workoutId ? (
+    <UpdateWorkoutModal workoutId={params?.workoutId as string} />
+  ) : (
+    <CreateWorkoutModal workoutType={params?.workoutType as WorkoutType} />
   )
 }
 

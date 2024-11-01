@@ -9,8 +9,9 @@ import {
 } from 'react-native'
 import { Button, Text, IconButton, Surface } from 'react-native-paper'
 import { COLORS } from '@/constants/colors'
-import { getCurrentDay } from '@/lib/date-fns'
-import { WorkoutTitle } from '@/constants/workouts'
+import { formatStandardDateFormat, getCurrentDay } from '@/lib/date-fns'
+import { WorkoutType } from '@/constants/workouts'
+import { useWorkoutManager } from '@/hooks/useWorkoutManager'
 
 const styles = StyleSheet.create({
   wrapper: {
@@ -48,14 +49,31 @@ const styles = StyleSheet.create({
   },
 })
 
+const LOGO_MAPPER = {
+  [WorkoutType.UPPER_A]: require('@/assets/images/upper1.png'),
+  [WorkoutType.UPPER_B]: require('@/assets/images/upper1.png'),
+  [WorkoutType.LOWER]: require('@/assets/images/lower.png'),
+}
+
 const Home = () => {
   const { push } = useRouter()
+  const { workouts, getWorkoutById } = useWorkoutManager()
 
-  const openModal = (workoutTitle: WorkoutTitle) =>
+  const openExistingWorkoutModal = (workoutId: string) => {
+    getWorkoutById(workoutId)
     push({
       pathname: '/(home)/modal',
       params: {
-        workoutTitle,
+        workoutId,
+      },
+    })
+  }
+
+  const openNewWorkoutModal = (workoutType: WorkoutType) =>
+    push({
+      pathname: '/(home)/modal',
+      params: {
+        workoutType,
       },
     })
 
@@ -75,7 +93,7 @@ const Home = () => {
         </View>
         <View style={styles.currentDayWorkout}>
           <Text variant="headlineMedium">Séance du jour</Text>
-          <Pressable onPress={() => openModal(WorkoutTitle.UPPER_A)}>
+          <Pressable onPress={() => openNewWorkoutModal(WorkoutType.UPPER_A)}>
             <Surface style={styles.workoutCard} elevation={2}>
               <Image
                 style={styles.workoutLogo}
@@ -87,7 +105,7 @@ const Home = () => {
                   mode="contained"
                   textColor={COLORS.secondary}
                   style={styles.workoutCta}
-                  onPress={() => openModal(WorkoutTitle.UPPER_A)}
+                  onPress={() => openNewWorkoutModal(WorkoutType.UPPER_A)}
                 >
                   Noter mes perfs
                 </Button>
@@ -97,46 +115,30 @@ const Home = () => {
         </View>
         <View style={styles.currentDayWorkout}>
           <Text variant="headlineMedium">Séances passées</Text>
-          <Pressable onPress={() => openModal(WorkoutTitle.LOWER)}>
-            <Surface style={styles.workoutCard} elevation={1}>
-              <Image
-                style={styles.workoutLogo}
-                source={require('@/assets/images/lower.png')}
-              />
-              <View>
-                <Text variant="headlineLarge">Lower</Text>
-                <Text variant="bodyLarge">12/12/2024</Text>
-                <Button
-                  mode="contained"
-                  textColor={COLORS.secondary}
-                  onPress={() => openModal(WorkoutTitle.LOWER)}
-                  style={styles.workoutCta}
-                >
-                  Voir mes perfs
-                </Button>
-              </View>
-            </Surface>
-          </Pressable>
-          <Pressable onPress={() => openModal(WorkoutTitle.UPPER_B)}>
-            <Surface style={styles.workoutCard} elevation={1}>
-              <Image
-                style={styles.workoutLogo}
-                source={require('@/assets/images/upper1.png')}
-              />
-              <View>
-                <Text variant="headlineLarge">Upper B</Text>
-                <Text variant="bodyLarge">01/12/2024</Text>
-                <Button
-                  mode="contained"
-                  textColor={COLORS.secondary}
-                  onPress={() => openModal(WorkoutTitle.UPPER_B)}
-                  style={styles.workoutCta}
-                >
-                  Voir mes perfs
-                </Button>
-              </View>
-            </Surface>
-          </Pressable>
+          {workouts.map(({ title, createdAt, _id }) => (
+            <Pressable
+              onPress={() => openExistingWorkoutModal(_id.toString())}
+              key={_id.toString()}
+            >
+              <Surface style={styles.workoutCard} elevation={1}>
+                <Image style={styles.workoutLogo} source={LOGO_MAPPER[title]} />
+                <View>
+                  <Text variant="headlineLarge">{title}</Text>
+                  <Text variant="bodyLarge">
+                    {formatStandardDateFormat(createdAt)}
+                  </Text>
+                  <Button
+                    mode="contained"
+                    textColor={COLORS.secondary}
+                    onPress={() => openExistingWorkoutModal(_id.toString())}
+                    style={styles.workoutCta}
+                  >
+                    Voir mes perfs
+                  </Button>
+                </View>
+              </Surface>
+            </Pressable>
+          ))}
         </View>
       </ScrollView>
     </SafeAreaView>

@@ -1,12 +1,13 @@
 import { ScrollView, StyleSheet, View } from 'react-native'
 import { Button, Surface, Text, TextInput } from 'react-native-paper'
 import { useState } from 'react'
-import { cloneDeep, set } from 'lodash-es'
+import { cloneDeep, omit, set } from 'lodash-es'
 import { useRouter } from 'expo-router'
 import { COLORS } from '@/constants/colors'
 import { getCurrentDay } from '@/lib/date-fns'
 
-import { WORKOUTS, WorkoutTitle } from '@/constants/workouts'
+import { WORKOUTS, WorkoutType } from '@/constants/workouts'
+import { useWorkoutManager } from '@/hooks/useWorkoutManager'
 
 const styles = StyleSheet.create({
   wrapper: {
@@ -45,13 +46,12 @@ const styles = StyleSheet.create({
 })
 
 interface SetWorkoutModalProps {
-  workoutTitle: WorkoutTitle
+  workoutType: WorkoutType
 }
 
-const SetWorkoutModal = ({ workoutTitle }: SetWorkoutModalProps) => {
+const SetWorkoutModal = ({ workoutType }: SetWorkoutModalProps) => {
   const { date } = getCurrentDay()
-
-  const [workout, setWorkout] = useState(cloneDeep(WORKOUTS[workoutTitle]))
+  const [workout, setWorkout] = useState(cloneDeep(WORKOUTS[workoutType]))
 
   const workoutEntries = Object.entries(workout.exercices)
 
@@ -60,7 +60,21 @@ const SetWorkoutModal = ({ workoutTitle }: SetWorkoutModalProps) => {
   }
 
   const { back } = useRouter()
-  const saveWorkout = back
+  const { createWorkout } = useWorkoutManager()
+
+  const saveWorkout = () => {
+    const cleanedWorkoutExercices = {
+      first: omit(workout.exercices.first, ['name', 'reps']),
+      second: omit(workout.exercices.second, ['name', 'reps']),
+      third: omit(workout.exercices.third, ['name', 'reps']),
+      fourth: omit(workout.exercices.fourth, ['name', 'reps']),
+      fifth: omit(workout.exercices.fifth, ['name', 'reps']),
+    }
+
+    createWorkout({ title: workoutType, exercices: cleanedWorkoutExercices })
+
+    back()
+  }
 
   return (
     <View style={styles.wrapper}>
@@ -138,7 +152,7 @@ const SetWorkoutModal = ({ workoutTitle }: SetWorkoutModalProps) => {
         style={styles.button}
         onPress={saveWorkout}
       >
-        Sauvgarder mes perfs
+        Enregistrer mes perfs
       </Button>
     </View>
   )

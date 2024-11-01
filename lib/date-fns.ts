@@ -9,4 +9,6 @@ const getCurrentDay = () => ({
   date: format(new Date(), 'dd MMMM yyyy'),
 })
 
-export { initDefaultLocale, getCurrentDay }
+const formatStandardDateFormat = (date: Date) => format(date, 'dd MMMM yyyy')
+
+export { initDefaultLocale, getCurrentDay, formatStandardDateFormat }
