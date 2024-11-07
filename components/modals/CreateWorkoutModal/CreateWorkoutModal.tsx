@@ -45,11 +45,11 @@ const styles = StyleSheet.create({
   },
 })
 
-interface SetWorkoutModalProps {
+interface CreateWorkoutModalProps {
   workoutType: WorkoutType
 }
 
-const SetWorkoutModal = ({ workoutType }: SetWorkoutModalProps) => {
+const CreateWorkoutModal = ({ workoutType }: CreateWorkoutModalProps) => {
   const { date } = getCurrentDay()
   const [workout, setWorkout] = useState(cloneDeep(WORKOUTS[workoutType]))
 
@@ -158,4 +158,4 @@ const SetWorkoutModal = ({ workoutType }: SetWorkoutModalProps) => {
   )
 }
 
-export { SetWorkoutModal }
+export { CreateWorkoutModal }

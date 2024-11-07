@@ -1,15 +1,15 @@
 /* eslint-disable global-require */
 import { useFonts } from 'expo-font'
-import { SplashScreen, Stack } from 'expo-router'
+import { Slot, SplashScreen } from 'expo-router'
 import { useEffect } from 'react'
 import { PaperProvider } from 'react-native-paper'
 
 import { RealmProvider } from '@realm/react'
-import { Realm } from 'realm'
 import { reactPaperTheme } from '@/lib/react-paper'
 import { initDefaultLocale } from '@/lib/date-fns'
 import { schemas } from '@/models'
 import { IS_DEV } from '@/constants'
+import { ProfileProvider } from '@/contexts/ProfileContext/ProfileContext'
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync()
@@ -27,21 +27,12 @@ const RootLayout = () => {
     }
   }, [loaded])
 
-  if (!loaded) {
-    return null
-  }
-
   return (
     <PaperProvider theme={reactPaperTheme}>
       <RealmProvider schema={schemas} deleteRealmIfMigrationNeeded={IS_DEV}>
-        <Stack
-          screenOptions={{
-            headerShown: false,
-          }}
-        >
-          <Stack.Screen name="(home)" options={{ headerShown: false }} />
-          <Stack.Screen name="(profile)" options={{ headerShown: false }} />
-        </Stack>
+        <ProfileProvider>
+          <Slot />
+        </ProfileProvider>
       </RealmProvider>
     </PaperProvider>
   )
