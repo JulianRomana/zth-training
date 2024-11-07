@@ -17,9 +17,24 @@ const styles = StyleSheet.create({
 interface WorkoutDayProps {
   workoutName: string
   activeWorkout: string
+  setWorkout: (workoutDay: number) => void
 }
 
-const WorkoutDay = ({ workoutName, activeWorkout }: WorkoutDayProps) => {
+const days = [
+  'Lundi',
+  'Mardi',
+  'Mercredi',
+  'Jeudi',
+  'Vendredi',
+  'Samedi',
+  'Dimanche',
+] as const
+
+const WorkoutDay = ({
+  workoutName,
+  activeWorkout,
+  setWorkout,
+}: WorkoutDayProps) => {
   const [isMenuVisible, setIsMenuVisible] = useState(false)
 
   return (
@@ -36,13 +51,16 @@ const WorkoutDay = ({ workoutName, activeWorkout }: WorkoutDayProps) => {
           </Button>
         }
       >
-        <Menu.Item onPress={() => {}} title="Lundi" />
-        <Menu.Item onPress={() => {}} title="Mardi" />
-        <Menu.Item onPress={() => {}} title="Mercredi" />
-        <Menu.Item onPress={() => {}} title="Jeudi" />
-        <Menu.Item onPress={() => {}} title="Vendredi" />
-        <Menu.Item onPress={() => {}} title="Samedi" />
-        <Menu.Item onPress={() => {}} title="Dimanche" />
+        {days.map((workouTitle, index) => (
+          <Menu.Item
+            key={workouTitle}
+            onPress={() => {
+              setWorkout(index + 1)
+              setIsMenuVisible(false)
+            }}
+            title={workouTitle}
+          />
+        ))}
       </Menu>
     </View>
   )

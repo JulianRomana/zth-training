@@ -1,4 +1,4 @@
-import { useRealm, Realm } from '@realm/react'
+import { useRealm, Realm, useQuery } from '@realm/react'
 import { useCallback } from 'react'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { Profile } from '@/models/Profile'
@@ -16,7 +16,6 @@ const useProfileManager = () => {
           })
         )
         AsyncStorage.setItem('currentProfileId', _id.toString())
-        AsyncStorage.setItem('hasDoneOnboarding', 'true')
       })
     },
     [realm]
@@ -36,22 +35,24 @@ const useProfileManager = () => {
     return profileById
   }, [realm])
 
-  const updateWorkout = useCallback(
-    (workout: Workout, path: string, val: string) => {
-      realm.write(() => {
-        const [workoutNumber, setNumber] = path.split('.') as [
-          keyof Workout['exercices'],
-          string,
-        ]
-
-        // eslint-disable-next-line no-param-reassign
-        workout.exercices[workoutNumber][setNumber] = val
-      })
-    },
-    [realm]
+  const profile = useQuery({
+    type: Profile,
+    query: (queriedProfiles) => queriedProfiles,
+  }).find(
+    async ({ _id }) =>
+      _id.toString() === (await AsyncStorage.getItem('currentProfileId'))
   )
 
-  return { createProfile, getProfile }
+  const updateProfileWorkoutDay = useCallback(
+    (key: 'lowerDay' | 'upperADay' | 'upperBDay', val: number) => {
+      realm.write(() => {
+        profile![key] = val
+      })
+    },
+    [realm, profile]
+  )
+
+  return { createProfile, getProfile, updateProfileWorkoutDay, profile }
 }
 
 export { useProfileManager }

@@ -1,10 +1,12 @@
 import { Link, useRouter } from 'expo-router'
 import { StyleSheet, SafeAreaView, View, ScrollView } from 'react-native'
 import { Text, IconButton } from 'react-native-paper'
+import { getDay } from 'date-fns'
 import { formatStandardDateFormat, getCurrentDay } from '@/lib/date-fns'
 import { WorkoutType } from '@/constants/workouts'
 import { useWorkoutManager } from '@/hooks/useWorkoutManager'
 import { WorkoutCard } from '@/components/WorkoutCard/WorkoutCard'
+import { useProfile } from '@/hooks/useProfile'
 
 const styles = StyleSheet.create({
   wrapper: {
@@ -25,6 +27,29 @@ const styles = StyleSheet.create({
 const Home = () => {
   const { push } = useRouter()
   const { workouts, getWorkoutById } = useWorkoutManager()
+  const { profile } = useProfile()
+  const nowDayNumber = getDay(new Date())
+
+  const workoutDayMapper = [
+    {
+      type: WorkoutType.UPPER_A,
+      day: profile?.upperADay,
+    },
+    {
+      type: WorkoutType.UPPER_B,
+      day: profile?.upperBDay,
+    },
+    {
+      type: WorkoutType.LOWER,
+      day: profile?.lowerDay,
+    },
+  ]
+
+  const currentDayWorkout = workoutDayMapper.find(
+    ({ day }) => day === nowDayNumber // @TODO mettre 1 min pour que ça match
+  )
+
+  console.log(currentDayWorkout)
 
   const openExistingWorkoutModal = (workoutId: string) => {
     getWorkoutById(workoutId)
@@ -58,14 +83,21 @@ const Home = () => {
           </View>
           <Text variant="bodyLarge">{date}</Text>
         </View>
-        <View style={styles.currentDayWorkout}>
-          <Text variant="headlineMedium">Séance du jour</Text>
-          <WorkoutCard
-            onPress={() => openNewWorkoutModal(WorkoutType.UPPER_A)}
-            type={WorkoutType.UPPER_A}
-            ctaText="Noter mes perfs"
-          />
-        </View>
+        {currentDayWorkout ? (
+          <View style={styles.currentDayWorkout}>
+            <Text variant="headlineMedium">Séance du jour</Text>
+            <WorkoutCard
+              onPress={() => openNewWorkoutModal(currentDayWorkout.type)}
+              type={currentDayWorkout.type}
+              ctaText="Noter mes perfs"
+            />
+          </View>
+        ) : (
+          <View style={styles.currentDayWorkout}>
+            <Text variant="headlineMedium">Séance du jour</Text>
+            <Text>Choisir un workout pour aujourdhui</Text>
+          </View>
+        )}
         <View style={styles.currentDayWorkout}>
           <Text variant="headlineMedium">Séances passées</Text>
           {!workouts.length ? (

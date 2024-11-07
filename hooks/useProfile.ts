@@ -3,12 +3,7 @@ import { ProfileContext } from '@/contexts/ProfileContext/ProfileContext'
 
 const useProfile = () => {
   const value = useContext(ProfileContext)
-
-  return {
-    profile: value?.profile,
-    isLoadingProfile: value?.isLoadingProfile,
-    getCurrentProfile: value?.getCurrentProfile,
-  }
+  return value
 }
 
 export { useProfile }
