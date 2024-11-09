@@ -82,74 +82,92 @@ const UpdateWorkoutModal = ({ workoutId }: UpdateWorkoutModalProps) => {
 
   const saveWorkout = back
 
+  const roundWeight = (weight: number) => Math.round(weight * 2 + 0.1) / 2
+  const updateWeightByFactor = (
+    { weight, factor }: Exercices['first'],
+    nbOfFactors: 1 | 2
+  ) => {
+    const weightToNumber = Number(weight)
+    if (nbOfFactors === 2) return roundWeight(weightToNumber * factor * factor)
+    return roundWeight(weightToNumber * factor)
+  }
+
   return (
     <View style={styles.wrapper}>
       <Text variant="headlineLarge">{workout?.title}</Text>
       <Text variant="bodyLarge">{date}</Text>
       <ScrollView>
-        {workoutEntries?.map(([exerciceNumber, exerciceInformations]) => (
-          <Surface style={styles.card} elevation={2} key={exerciceNumber}>
-            <Text variant="headlineSmall">{exerciceInformations.name}</Text>
-            <View style={styles.inputWrapper}>
-              <Text variant="bodyLarge">Poid</Text>
-              <TextInput
-                value={exerciceInformations.weight}
-                keyboardType="numeric"
-                onChangeText={(value) =>
-                  setInputValue(value, `${exerciceNumber}.weight`)
-                }
-                style={styles.input}
-              />
-              <Text variant="bodyLarge">kg</Text>
-            </View>
-            <View style={styles.separator} />
-            <View style={styles.inputWrapper}>
-              <Text variant="bodyLarge">Série 1</Text>
-              <TextInput
-                value={exerciceInformations.firstSet}
-                keyboardType="numeric"
-                onChangeText={(value) =>
-                  setInputValue(value, `${exerciceNumber}.firstSet`)
-                }
-                style={styles.input}
-              />
-              <Text variant="bodyLarge">{exerciceInformations.reps[0]}</Text>
-              <Text variant="bodySmall" style={styles.weightAnnotation}>
-                ({exerciceInformations.weight}kg)
-              </Text>
-            </View>
-            <View style={styles.inputWrapper}>
-              <Text variant="bodyLarge">Série 2</Text>
-              <TextInput
-                value={exerciceInformations.secondSet}
-                keyboardType="numeric"
-                onChangeText={(value) =>
-                  setInputValue(value, `${exerciceNumber}.secondSet`)
-                }
-                style={styles.input}
-              />
-              <Text variant="bodyLarge">{exerciceInformations.reps[1]}</Text>
-              <Text variant="bodySmall" style={styles.weightAnnotation}>
-                ({exerciceInformations.weight}kg)
-              </Text>
-            </View>
-            <View style={styles.inputWrapper}>
-              <Text variant="bodyLarge">Série 3</Text>
-              <TextInput
-                value={exerciceInformations.thirdSet}
-                keyboardType="numeric"
-                onChangeText={(value) =>
-                  setInputValue(value, `${exerciceNumber}.thirdSet`)
-                }
-                style={styles.input}
-              />
-              <Text variant="bodyLarge">{exerciceInformations.reps[2]}</Text>
-              <Text variant="bodySmall" style={styles.weightAnnotation}>
-                ({exerciceInformations.weight}kg)
-              </Text>
-            </View>
-          </Surface>
-        ))}
+        {workoutEntries?.map(
+          ([exerciceNumber, exerciceInformations]: [
+            string,
+            Exercices['first'],
+          ]) => (
+            <Surface style={styles.card} elevation={2} key={exerciceNumber}>
+              <Text variant="headlineSmall">{exerciceInformations.name}</Text>
+              <View style={styles.inputWrapper}>
+                <Text variant="bodyLarge">Poid</Text>
+                <TextInput
+                  value={exerciceInformations.weight}
+                  keyboardType="numeric"
+                  onChangeText={(value) =>
+                    setInputValue(value, `${exerciceNumber}.weight`)
+                  }
+                  style={styles.input}
+                />
+                <Text variant="bodyLarge">kg</Text>
+              </View>
+              <View style={styles.separator} />
+              <View style={styles.inputWrapper}>
+                <Text variant="bodyLarge">Série 1</Text>
+                <TextInput
+                  value={exerciceInformations.firstSet}
+                  keyboardType="numeric"
+                  onChangeText={(value) =>
+                    setInputValue(value, `${exerciceNumber}.firstSet`)
+                  }
+                  style={styles.input}
+                />
+                <Text variant="bodyLarge">{exerciceInformations.reps[0]}</Text>
+                <Text variant="bodySmall" style={styles.weightAnnotation}>
+                  ({exerciceInformations.weight}
+                  kg)
+                </Text>
+              </View>
+              <View style={styles.inputWrapper}>
+                <Text variant="bodyLarge">Série 2</Text>
+                <TextInput
+                  value={exerciceInformations.secondSet}
+                  keyboardType="numeric"
+                  onChangeText={(value) =>
+                    setInputValue(value, `${exerciceNumber}.secondSet`)
+                  }
+                  style={styles.input}
+                />
+                <Text variant="bodyLarge">{exerciceInformations.reps[1]}</Text>
+                <Text variant="bodySmall" style={styles.weightAnnotation}>
+                  ({updateWeightByFactor(exerciceInformations, 1)}
+                  kg)
+                </Text>
+              </View>
+              <View style={styles.inputWrapper}>
+                <Text variant="bodyLarge">Série 3</Text>
+                <TextInput
+                  value={exerciceInformations.thirdSet}
+                  keyboardType="numeric"
+                  onChangeText={(value) =>
+                    setInputValue(value, `${exerciceNumber}.thirdSet`)
+                  }
+                  style={styles.input}
+                />
+                <Text variant="bodyLarge">{exerciceInformations.reps[2]}</Text>
+                <Text variant="bodySmall" style={styles.weightAnnotation}>
+                  ({updateWeightByFactor(exerciceInformations, 2)}
+                  kg)
+                </Text>
+              </View>
+            </Surface>
+          )
+        )}
       </ScrollView>
 
       <Button

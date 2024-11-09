@@ -11,6 +11,7 @@ interface Exercices {
     secondSet: string
     thirdSet: string
     weight: string
+    factor: number
   }
   second: {
     name: string
@@ -19,6 +20,7 @@ interface Exercices {
     secondSet: string
     thirdSet: string
     weight: string
+    factor: number
   }
   third: {
     name: string
@@ -27,6 +29,7 @@ interface Exercices {
     secondSet: string
     thirdSet: string
     weight: string
+    factor: number
   }
   fourth: {
     name: string
@@ -35,6 +38,7 @@ interface Exercices {
     secondSet: string
     thirdSet: string
     weight: string
+    factor: number
   }
   fifth: {
     name: string
@@ -43,6 +47,7 @@ interface Exercices {
     secondSet: string
     thirdSet: string
     weight: string
+    factor: number
   }
 }
 
@@ -57,6 +62,7 @@ const WORKOUTS: Record<WorkoutType, { title: string; exercices: Exercices }> = {
         secondSet: '',
         thirdSet: '',
         weight: '',
+        factor: 0.9,
       },
       second: {
         name: 'Tractions lestées',
@@ -65,6 +71,7 @@ const WORKOUTS: Record<WorkoutType, { title: string; exercices: Exercices }> = {
         secondSet: '',
         thirdSet: '',
         weight: '',
+        factor: 0.9,
       },
       third: {
         name: 'Élévations Frontales (pecs)',
@@ -73,6 +80,7 @@ const WORKOUTS: Record<WorkoutType, { title: string; exercices: Exercices }> = {
         secondSet: '',
         thirdSet: '',
         weight: '',
+        factor: 1,
       },
       fourth: {
         name: 'Curl incliné haltères',
@@ -81,6 +89,7 @@ const WORKOUTS: Record<WorkoutType, { title: string; exercices: Exercices }> = {
         secondSet: '',
         thirdSet: '',
         weight: '',
+        factor: 1,
       },
       fifth: {
         name: 'Élévations latérales',
@@ -89,6 +98,7 @@ const WORKOUTS: Record<WorkoutType, { title: string; exercices: Exercices }> = {
         secondSet: '',
         thirdSet: '',
         weight: '',
+        factor: 1.15,
       },
     },
   },
@@ -102,6 +112,7 @@ const WORKOUTS: Record<WorkoutType, { title: string; exercices: Exercices }> = {
         secondSet: '',
         thirdSet: '',
         weight: '',
+        factor: 1,
       },
       second: {
         name: 'Romanian deadlift / Fentes',
@@ -110,6 +121,7 @@ const WORKOUTS: Record<WorkoutType, { title: string; exercices: Exercices }> = {
         secondSet: '',
         thirdSet: '',
         weight: '',
+        factor: 1,
       },
       third: {
         name: 'Leg curl superset - Leg extension',
@@ -118,6 +130,7 @@ const WORKOUTS: Record<WorkoutType, { title: string; exercices: Exercices }> = {
         secondSet: '',
         thirdSet: '',
         weight: '',
+        factor: 1,
       },
       fourth: {
         name: 'Extensions mollets',
@@ -126,6 +139,7 @@ const WORKOUTS: Record<WorkoutType, { title: string; exercices: Exercices }> = {
         secondSet: '',
         thirdSet: '',
         weight: '',
+        factor: 1,
       },
       fifth: {
         name: 'Upright row penché',
@@ -134,6 +148,7 @@ const WORKOUTS: Record<WorkoutType, { title: string; exercices: Exercices }> = {
         secondSet: '',
         thirdSet: '',
         weight: '',
+        factor: 1.2,
       },
     },
   },
@@ -147,6 +162,7 @@ const WORKOUTS: Record<WorkoutType, { title: string; exercices: Exercices }> = {
         secondSet: '',
         thirdSet: '',
         weight: '',
+        factor: 0.9,
       },
       second: {
         name: 'Développé couché',
@@ -155,6 +171,7 @@ const WORKOUTS: Record<WorkoutType, { title: string; exercices: Exercices }> = {
         secondSet: '',
         thirdSet: '',
         weight: '',
+        factor: 0.9,
       },
       third: {
         name: 'Tractions prise neutre',
@@ -163,6 +180,7 @@ const WORKOUTS: Record<WorkoutType, { title: string; exercices: Exercices }> = {
         secondSet: '',
         thirdSet: '',
         weight: '',
+        factor: 1,
       },
       fourth: {
         name: 'Oiseau assis prise neutre',
@@ -171,6 +189,7 @@ const WORKOUTS: Record<WorkoutType, { title: string; exercices: Exercices }> = {
         secondSet: '',
         thirdSet: '',
         weight: '',
+        factor: 1,
       },
       fifth: {
         name: 'Upright row',
@@ -179,6 +198,7 @@ const WORKOUTS: Record<WorkoutType, { title: string; exercices: Exercices }> = {
         secondSet: '',
         thirdSet: '',
         weight: '',
+        factor: 1.2,
       },
     },
   },

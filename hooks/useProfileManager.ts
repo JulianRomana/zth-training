@@ -8,7 +8,7 @@ const useProfileManager = () => {
 
   const createProfile = useCallback(
     ({ name }: Parameters<(typeof Profile)['generate']>[0]) => {
-      realm.write(async () => {
+      realm.write(() => {
         const { _id } = realm.create(
           'Profile',
           Profile.generate({
@@ -52,7 +52,23 @@ const useProfileManager = () => {
     [realm, profile]
   )
 
-  return { createProfile, getProfile, updateProfileWorkoutDay, profile }
+  const updateProfileMealTime = useCallback(
+    (val: Date) => {
+      realm.write(() => {
+        if (!profile) return
+        profile.firstMealTime = val
+      })
+    },
+    [realm, profile]
+  )
+
+  return {
+    createProfile,
+    getProfile,
+    updateProfileWorkoutDay,
+    profile,
+    updateProfileMealTime,
+  }
 }
 
 export { useProfileManager }

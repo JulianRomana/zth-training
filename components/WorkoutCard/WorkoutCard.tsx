@@ -1,4 +1,3 @@
-import React from 'react'
 import { Image, Pressable, StyleSheet, View } from 'react-native'
 import { Button, Surface, Text } from 'react-native-paper'
 import { WorkoutType } from '@/constants/workouts'
@@ -20,11 +19,6 @@ const styles = StyleSheet.create({
     paddingVertical: 24,
     borderRadius: 14,
     marginTop: 20,
-    /*     backgroundColor: COLORS.secondary,
-    shadowColor: '#171717',
-    shadowOffset: { width: -2, height: 4 },
-    shadowOpacity: 0.2,
-    shadowRadius: 3, */
   },
   workoutLogo: {
     width: 120,

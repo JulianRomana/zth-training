@@ -3,11 +3,11 @@ import { ObjectSchema } from 'realm'
 import { Exercices, WorkoutType } from '@/constants/workouts'
 
 interface WorkoutExercices {
-  first: Omit<Exercices['first'], 'name' | 'reps'>
-  second: Omit<Exercices['second'], 'name' | 'reps'>
-  third: Omit<Exercices['third'], 'name' | 'reps'>
-  fourth: Omit<Exercices['fourth'], 'name' | 'reps'>
-  fifth: Omit<Exercices['fifth'], 'name' | 'reps'>
+  first: Omit<Exercices['first'], 'name' | 'reps' | 'factor'>
+  second: Omit<Exercices['second'], 'name' | 'reps' | 'factor'>
+  third: Omit<Exercices['third'], 'name' | 'reps' | 'factor'>
+  fourth: Omit<Exercices['fourth'], 'name' | 'reps' | 'factor'>
+  fifth: Omit<Exercices['fifth'], 'name' | 'reps' | 'factor'>
 }
 
 interface WorkoutExercicesDictionary

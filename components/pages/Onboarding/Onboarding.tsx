@@ -11,7 +11,7 @@ const Onboarding = () => {
 
   const onCreateProfile = () => {
     createProfile({ name })
-    push('/(app)/(home)')
+    setTimeout(() => push('/(app)/(home)'), 100)
   }
 
   return (

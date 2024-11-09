@@ -12,6 +12,8 @@ class Profile extends Realm.Object {
 
   lowerDay!: number | null
 
+  // test!: 'a'
+
   firstMealTime?: Date
 
   static generate({ name }: { name: string }) {
@@ -20,6 +22,7 @@ class Profile extends Realm.Object {
       upperADay: null,
       upperBDay: null,
       lowerDay: null,
+      // test: 'a',
       firstMealTime: new Date(),
       _id: new Realm.BSON.ObjectId(),
     }
@@ -33,6 +36,7 @@ class Profile extends Realm.Object {
       name: {
         type: 'string',
       },
+      // test: 'string',
       upperADay: {
         type: 'int',
         optional: true,
