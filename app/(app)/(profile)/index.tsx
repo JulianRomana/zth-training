@@ -1,6 +1,6 @@
 import { SafeAreaView, StyleSheet } from 'react-native'
 import { Text } from 'react-native-paper'
-import { Profile } from '@/components/pages/Profile/Profile'
+import { Profile } from '@/pages/Profile/Profile'
 import { useProfile } from '@/hooks/useProfile'
 
 const styles = StyleSheet.create({

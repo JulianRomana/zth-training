@@ -6,12 +6,15 @@ import { WorkoutType } from '@/constants/workouts'
 /* https://github.com/expo/expo/issues/26922 */
 
 const WorkoutModal = () => {
-  const params = useLocalSearchParams()
+  const params = useLocalSearchParams<{
+    workoutType?: WorkoutType
+    workoutId?: string
+  }>()
 
   return params?.workoutId ? (
     <UpdateWorkoutModal workoutId={params?.workoutId as string} />
   ) : (
-    <CreateWorkoutModal workoutType={params?.workoutType as WorkoutType} />
+    <CreateWorkoutModal workoutTypeProp={params?.workoutType as WorkoutType} />
   )
 }
 
