@@ -1,4 +1,4 @@
-import { ScrollView, StyleSheet, View } from 'react-native'
+import { ScrollView, StyleSheet, View, SafeAreaView } from 'react-native'
 import { Button, Surface, Text, TextInput } from 'react-native-paper'
 import { useState } from 'react'
 import { cloneDeep, set } from 'lodash-es'
@@ -93,7 +93,7 @@ const UpdateWorkoutModal = ({ workoutId }: UpdateWorkoutModalProps) => {
   }
 
   return (
-    <View style={styles.wrapper}>
+    <SafeAreaView style={styles.wrapper}>
       <Text variant="headlineLarge">{workout?.title}</Text>
       <Text variant="bodyLarge">{date}</Text>
       <ScrollView>
@@ -178,7 +178,7 @@ const UpdateWorkoutModal = ({ workoutId }: UpdateWorkoutModalProps) => {
       >
         Enregistrer mes perfs
       </Button>
-    </View>
+    </SafeAreaView>
   )
 }
 

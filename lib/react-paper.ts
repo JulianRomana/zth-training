@@ -1,4 +1,4 @@
-import { MD3LightTheme as DefaultTheme } from 'react-native-paper'
+import { MD3DarkTheme as DefaultTheme } from 'react-native-paper'
 import { COLORS } from '@/constants/colors'
 
 const reactPaperTheme: typeof DefaultTheme = {
@@ -23,7 +23,7 @@ const reactPaperTheme: typeof DefaultTheme = {
       fontFamily: 'Abel',
     },
   },
-  roundness: 0,
+  roundness: 2,
 }
 
 export { reactPaperTheme }

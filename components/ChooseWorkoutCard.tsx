@@ -1,4 +1,4 @@
-import { Image, Pressable, StyleSheet, View } from 'react-native'
+import { Pressable, StyleSheet, View } from 'react-native'
 import { Button, Surface, Text } from 'react-native-paper'
 import { COLORS } from '@/constants/colors'
 
@@ -11,7 +11,14 @@ const styles = StyleSheet.create({
     paddingHorizontal: 18,
     paddingVertical: 24,
     borderRadius: 14,
-    marginTop: 20,
+    marginTop: 12,
+    backgroundColor: COLORS.secondary,
+  },
+  wrapper: {
+    flex: 1,
+  },
+  title: {
+    fontSize: 18,
   },
   workoutLogo: {
     width: 120,
@@ -26,15 +33,17 @@ const styles = StyleSheet.create({
 const ChooseWorkoutCard = ({ onPress }: ChooseWorkoutCardProps) => (
   <Pressable onPress={onPress}>
     <Surface style={styles.workoutCard} elevation={2}>
-      <View>
-        <Text variant="headlineLarge">Aucun séance pour aujourd&apos;hui</Text>
+      <View style={styles.wrapper}>
+        <Text variant="bodyLarge" style={styles.title}>
+          Pas de séance prévue pour aujourd&apos;hui
+        </Text>
         <Button
           mode="contained"
           textColor={COLORS.secondary}
           style={styles.workoutCta}
           onPress={onPress}
         >
-          Choisir un workout pour aujourdhui
+          Choisir une séance
         </Button>
       </View>
     </Surface>

@@ -16,7 +16,7 @@ const FirstMealStep = () => {
     updateProfileMealTime(selectedDate)
   }
   const goHome = () => {
-    push('/(app)/(home)')
+    push('/(app)')
   }
 
   return (

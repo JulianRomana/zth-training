@@ -14,9 +14,10 @@
 } */
 
 const COLORS = {
-  background: '#F3F3F3',
+  background: '#000000',
   primary: '#E6BD7D',
   secondary: '#242424',
+  grayLighter: '#AEAEAE',
   white: '#ffffff',
 }
 

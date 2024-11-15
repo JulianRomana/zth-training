@@ -65,7 +65,7 @@ const Profile = () => {
         )}
       </View>
 
-      <Link href="/(home)" asChild>
+      <Link href="/(app)" asChild>
         <Button mode="contained">Go to main</Button>
       </Link>
     </View>

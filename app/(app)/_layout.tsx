@@ -12,10 +12,12 @@ const AppLayout = () => {
     <Stack
       screenOptions={{
         headerShown: false,
+        contentStyle: { backgroundColor: 'black' },
       }}
     >
-      <Stack.Screen name="(home)" options={{ headerShown: false }} />
-      <Stack.Screen name="(profile)" options={{ headerShown: false }} />
+      <Stack.Screen name="index" options={{ headerShown: false }} />
+      <Stack.Screen name="profile" options={{ headerShown: false }} />
+      <Stack.Screen name="workout" options={{ headerShown: false }} />
     </Stack>
   )
 }

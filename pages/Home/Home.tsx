@@ -1,17 +1,23 @@
 import { Link, useRouter } from 'expo-router'
 import { StyleSheet, SafeAreaView, View, ScrollView } from 'react-native'
 import { Text, IconButton } from 'react-native-paper'
-import { getDay, getISODay, startOfWeek } from 'date-fns'
+import { format, getDay, getISODay } from 'date-fns'
+import { cloneDeep } from 'lodash-es'
 import { formatStandardDateFormat, getCurrentDay } from '@/lib/date-fns'
-import { WorkoutType } from '@/constants/workouts'
+import { WORKOUTS, WorkoutType } from '@/constants/workouts'
 import { useWorkoutManager } from '@/hooks/useWorkoutManager'
 import { WorkoutCard } from '@/components/WorkoutCard'
 import { useProfile } from '@/hooks/useProfile'
 import ChooseWorkoutCard from '@/components/ChooseWorkoutCard'
+import { COLORS } from '@/constants/colors'
 
 const styles = StyleSheet.create({
   wrapper: {
     marginHorizontal: 10,
+  },
+  date: {
+    color: COLORS.grayLighter,
+    fontSize: 14,
   },
   header: {
     display: 'flex',
@@ -20,17 +26,21 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   currentDayWorkout: {
-    marginTop: 50,
-    marginBottom: 70,
+    marginTop: 20,
+    marginBottom: 32,
   },
   chooseWorkoutCta: {
     marginTop: 70,
+  },
+  noWorkout: {
+    textAlign: 'center',
+    marginTop: 50,
   },
 })
 
 const Home = () => {
   const { push } = useRouter()
-  const { workouts, getWorkoutById } = useWorkoutManager()
+  const { workouts, createWorkout } = useWorkoutManager()
   const { profile } = useProfile()
   const nowDayNumber = getISODay(new Date())
 
@@ -50,11 +60,11 @@ const Home = () => {
   ]
 
   const currentDayWorkout = workoutDayMapper.find(
-    ({ day }) => day === nowDayNumber // @TODO mettre 1 min pour que ça match
+    ({ day }) => day === nowDayNumber
   )
 
   const currentDayCreatedWorkout = workouts.find(
-    ({ createdAt }) => getDay(createdAt) === nowDayNumber // @TODO mettre 1 min pour que ça match
+    ({ createdAt }) => getDay(createdAt) === nowDayNumber
   )
 
   const pastWorkouts = workouts.filter(
@@ -62,24 +72,34 @@ const Home = () => {
   )
 
   const openExistingWorkoutModal = (workoutId: string) => {
-    getWorkoutById(workoutId)
     push({
-      pathname: '/(app)/workout-modal',
-      params: {
+      pathname: '/(app)/workout',
+      /*  params: {
         workoutId,
+      }, */
+    })
+  }
+
+  const createNewWorkout = (workoutType?: WorkoutType) => {
+    if (!workoutType) {
+      push({ pathname: '/(app)/workout' })
+      return
+    }
+
+    const newWorkoutId = createWorkout({
+      title: workoutType,
+      exercices: cloneDeep(WORKOUTS[workoutType].exercices),
+    })
+
+    push({
+      pathname: '/(app)/workout',
+      params: {
+        workoutId: newWorkoutId.toString(),
       },
     })
   }
 
-  const openNewWorkoutModal = (workoutType?: WorkoutType) =>
-    push({
-      pathname: '/(app)/workout-modal',
-      params: {
-        workoutType,
-      },
-    })
-
-  const { weekDay, date } = getCurrentDay()
+  const { date } = getCurrentDay()
 
   const getCurrentDayWorkout = () => {
     if (currentDayCreatedWorkout)
@@ -89,33 +109,34 @@ const Home = () => {
             openExistingWorkoutModal(currentDayCreatedWorkout._id.toString())
           }
           type={currentDayCreatedWorkout.title}
-          ctaText="Noter mes perfs"
+          date={format(currentDayCreatedWorkout.createdAt, 'dd/MM/yyyy')}
         />
       )
 
     if (currentDayWorkout)
       return (
         <WorkoutCard
-          onPress={() => openNewWorkoutModal(currentDayWorkout.type)}
+          onPress={() => createNewWorkout(currentDayWorkout.type)}
           type={currentDayWorkout.type}
-          ctaText="Noter mes perfs"
         />
       )
 
-    return <ChooseWorkoutCard onPress={() => openNewWorkoutModal()} />
+    return <ChooseWorkoutCard onPress={() => createNewWorkout()} />
   }
 
   return (
     <SafeAreaView style={styles.wrapper}>
       <ScrollView>
         <View>
+          <Text variant="bodyLarge" style={styles.date}>
+            {date}
+          </Text>
           <View style={styles.header}>
-            <Text variant="headlineLarge">{weekDay}</Text>
-            <Link href="/(app)/(profile)" asChild>
+            <Text variant="headlineLarge">Résumé</Text>
+            <Link href="/(app)/profile" asChild>
               <IconButton icon="account" mode="contained" />
             </Link>
           </View>
-          <Text variant="bodyLarge">{date}</Text>
         </View>
         <View style={styles.currentDayWorkout}>
           <Text variant="headlineMedium">Séance du jour</Text>
@@ -124,13 +145,15 @@ const Home = () => {
         <View style={styles.currentDayWorkout}>
           <Text variant="headlineMedium">Séances passées</Text>
           {!pastWorkouts.length ? (
-            <Text>Rentre ta premiere séance </Text>
+            <Text style={styles.noWorkout} variant="bodyLarge">
+              Rentre ta premiere séance
+            </Text>
           ) : (
             pastWorkouts.map(({ title, createdAt, _id }) => (
               <WorkoutCard
                 onPress={() => openExistingWorkoutModal(_id.toString())}
                 key={_id.toString()}
-                ctaText="Voir mes perfs"
+                small
                 type={title}
                 date={formatStandardDateFormat(createdAt)}
               />

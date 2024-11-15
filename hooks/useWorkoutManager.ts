@@ -12,17 +12,17 @@ const useWorkoutManager = () => {
   })
 
   const createWorkout = useCallback(
-    ({ exercices, title }: Parameters<(typeof Workout)['generate']>[0]) => {
+    ({ exercices, title }: Parameters<(typeof Workout)['generate']>[0]) =>
       realm.write(() => {
-        realm.create(
+        const { _id } = realm.create(
           'Workout',
           Workout.generate({
             title,
             exercices,
           })
         )
-      })
-    },
+        return _id
+      }),
     [realm]
   )
 

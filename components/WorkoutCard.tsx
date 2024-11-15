@@ -1,38 +1,47 @@
+/* eslint-disable react/require-default-props */
 import { Image, Pressable, StyleSheet, View } from 'react-native'
-import { Button, Surface, Text } from 'react-native-paper'
+import { Surface, Text } from 'react-native-paper'
 import { WorkoutType } from '@/constants/workouts'
-import { COLORS } from '@/constants/colors'
 
 interface WorkoutCardProps {
   type: WorkoutType
-  ctaText: string
   onPress: () => void
   // Will be deprecated with the Component.DefaultProps syntax
-  // eslint-disable-next-line react/require-default-props
+
+  small?: boolean
   date?: string
 }
 
 const styles = StyleSheet.create({
   workoutCard: {
     flexDirection: 'row',
-    paddingHorizontal: 18,
-    paddingVertical: 24,
+    justifyContent: 'space-between',
+    padding: 12,
+    alignItems: 'center',
     borderRadius: 14,
-    marginTop: 20,
+    marginTop: 12,
   },
   workoutLogo: {
-    width: 120,
+    width: 140,
     height: 140,
-    marginEnd: 10,
   },
-  workoutCta: {
-    marginTop: 'auto',
+  wrapper: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  workoutLogoSmall: {
+    width: 42,
+    height: 42,
+    marginRight: 12,
+  },
+  workoutTitle: {
+    fontSize: 26,
   },
 })
 
 const LOGO_MAPPER = {
-  [WorkoutType.UPPER_A]: require('@/assets/images/upper1.png'),
-  [WorkoutType.UPPER_B]: require('@/assets/images/upper1.png'),
+  [WorkoutType.UPPER_A]: require('@/assets/images/uppera.png'),
+  [WorkoutType.UPPER_B]: require('@/assets/images/upperb.png'),
   [WorkoutType.LOWER]: require('@/assets/images/lower.png'),
 }
 
@@ -45,26 +54,32 @@ const TYPE_TITLE_MAPPER = {
 const WorkoutCard = ({
   type,
   onPress,
-  ctaText,
   date = '',
+  small = false,
 }: WorkoutCardProps) => {
   const image = LOGO_MAPPER[type]
   return (
     <Pressable onPress={onPress}>
-      <Surface style={styles.workoutCard} elevation={2}>
-        <Image style={styles.workoutLogo} source={image} />
-        <View>
-          <Text variant="headlineLarge">{TYPE_TITLE_MAPPER[type]}</Text>
-          <Text variant="bodyLarge">{date}</Text>
-          <Button
-            mode="contained"
-            textColor={COLORS.secondary}
-            style={styles.workoutCta}
-            onPress={onPress}
-          >
-            {ctaText}
-          </Button>
-        </View>
+      <Surface style={[styles.workoutCard]} elevation={2}>
+        {small ? (
+          <>
+            <View style={styles.wrapper}>
+              <Image
+                style={[styles.workoutLogo, small && styles.workoutLogoSmall]}
+                source={image}
+              />
+              <Text variant="bodyLarge">{TYPE_TITLE_MAPPER[type]}</Text>
+            </View>
+            <Text variant="bodySmall">{date}</Text>
+          </>
+        ) : (
+          <>
+            <Text variant="bodyLarge" style={styles.workoutTitle}>
+              {TYPE_TITLE_MAPPER[type]}
+            </Text>
+            <Image style={styles.workoutLogo} source={image} />
+          </>
+        )}
       </Surface>
     </Pressable>
   )
