@@ -1,7 +1,7 @@
 import { useLocalSearchParams } from 'expo-router'
 import { useState } from 'react'
-import { CreateWorkoutModal } from './components/CreateWorkoutModal'
-import { UpdateWorkoutModal } from './components/UpdateWorkoutModal'
+import { CreateWorkoutModal } from './components/CreateWorkout'
+import { UpdateWorkoutModal } from './components/UpdateWorkout'
 
 const Workout = () => {
   const params = useLocalSearchParams<{

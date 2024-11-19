@@ -1,5 +1,6 @@
 import { Realm } from '@realm/react'
 import { ObjectSchema } from 'realm'
+import { setHours, setMilliseconds } from 'date-fns'
 
 class Profile extends Realm.Object {
   _id!: Realm.BSON.ObjectId
@@ -12,7 +13,7 @@ class Profile extends Realm.Object {
 
   lowerDay!: number | null
 
-  test!: 'a'
+  // test!: 'a'
 
   firstMealTime?: Date
 
@@ -22,8 +23,8 @@ class Profile extends Realm.Object {
       upperADay: null,
       upperBDay: null,
       lowerDay: null,
-      test: 'a',
-      firstMealTime: new Date(),
+      // test: 'a',
+      firstMealTime: setHours(setMilliseconds(new Date(), 0), 12),
       _id: new Realm.BSON.ObjectId(),
     }
   }
@@ -36,7 +37,7 @@ class Profile extends Realm.Object {
       name: {
         type: 'string',
       },
-      test: 'string',
+      // test: 'string',
       upperADay: {
         type: 'int',
         optional: true,

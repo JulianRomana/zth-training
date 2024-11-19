@@ -1,8 +1,9 @@
 import { Link, useRouter } from 'expo-router'
 import { StyleSheet, SafeAreaView, View, ScrollView } from 'react-native'
 import { Text, IconButton } from 'react-native-paper'
-import { format, getDay, getISODay } from 'date-fns'
+import { format, getISODay, isBefore, startOfDay } from 'date-fns'
 import { cloneDeep } from 'lodash-es'
+import { useState } from 'react'
 import { formatStandardDateFormat, getCurrentDay } from '@/lib/date-fns'
 import { WORKOUTS, WorkoutType } from '@/constants/workouts'
 import { useWorkoutManager } from '@/hooks/useWorkoutManager'
@@ -36,6 +37,14 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     marginTop: 50,
   },
+  pastWorkoutsTitle: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  seeMore: {
+    color: COLORS.primary,
+  },
 })
 
 const Home = () => {
@@ -64,19 +73,24 @@ const Home = () => {
   )
 
   const currentDayCreatedWorkout = workouts.find(
-    ({ createdAt }) => getDay(createdAt) === nowDayNumber
+    ({ createdAt }) => getISODay(createdAt) === nowDayNumber
   )
 
-  const pastWorkouts = workouts.filter(
-    ({ createdAt }) => getDay(createdAt) < nowDayNumber
+  const [canSeeMore, setCanSeeMore] = useState(false)
+
+  const pastWorkouts = workouts.filter(({ createdAt }) =>
+    isBefore(createdAt, startOfDay(new Date()))
   )
+  const limitedPastWorkouts = canSeeMore
+    ? pastWorkouts
+    : pastWorkouts.slice(0, 3)
 
   const openExistingWorkoutModal = (workoutId: string) => {
     push({
       pathname: '/(app)/workout',
-      /*  params: {
+      params: {
         workoutId,
-      }, */
+      },
     })
   }
 
@@ -143,13 +157,24 @@ const Home = () => {
           {getCurrentDayWorkout()}
         </View>
         <View style={styles.currentDayWorkout}>
-          <Text variant="headlineMedium">Séances passées</Text>
-          {!pastWorkouts.length ? (
+          <View style={styles.pastWorkoutsTitle}>
+            <Text variant="headlineMedium">Séances passées</Text>
+            {pastWorkouts.length > 3 && (
+              <Text
+                variant="bodyMedium"
+                style={styles.seeMore}
+                onPress={() => setCanSeeMore(!canSeeMore)}
+              >
+                {canSeeMore ? 'Voir moins' : 'Voir plus'}
+              </Text>
+            )}
+          </View>
+          {!limitedPastWorkouts.length ? (
             <Text style={styles.noWorkout} variant="bodyLarge">
               Rentre ta premiere séance
             </Text>
           ) : (
-            pastWorkouts.map(({ title, createdAt, _id }) => (
+            limitedPastWorkouts.map(({ title, createdAt, _id }) => (
               <WorkoutCard
                 onPress={() => openExistingWorkoutModal(_id.toString())}
                 key={_id.toString()}

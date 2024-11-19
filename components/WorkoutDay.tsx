@@ -1,7 +1,8 @@
 import React, { useState } from 'react'
 import { StyleSheet, TouchableOpacity, View } from 'react-native'
-import { IconButton, Menu, Text } from 'react-native-paper'
+import { Menu, Text } from 'react-native-paper'
 import { DayOption } from '@/types'
+import { COLORS } from '@/constants/colors'
 
 const styles = StyleSheet.create({
   wrapper: {
@@ -9,11 +10,14 @@ const styles = StyleSheet.create({
   },
   workoutDayWrapper: {
     flexDirection: 'row',
-    marginBottom: 10,
+    marginBottom: 28,
   },
   changeWorkoutDayButton: {
     flexDirection: 'row',
     alignItems: 'center',
+  },
+  activeWorkout: {
+    color: COLORS.primary,
   },
   button: {
     marginRight: 'auto',
@@ -42,7 +46,7 @@ const WorkoutDay = ({
   return (
     <View style={styles.workoutDayWrapper}>
       <Text variant="bodyLarge" style={styles.button}>
-        {workoutName}:
+        {workoutName}
       </Text>
       <Menu
         visible={isMenuVisible}
@@ -52,8 +56,9 @@ const WorkoutDay = ({
             style={styles.changeWorkoutDayButton}
             onPress={() => setIsMenuVisible(true)}
           >
-            <Text variant="bodyLarge">{activeWorkout}</Text>
-            <IconButton icon={isMenuVisible ? 'chevron-up' : 'chevron-down'} />
+            <Text variant="bodyLarge" style={styles.activeWorkout}>
+              {activeWorkout}
+            </Text>
           </TouchableOpacity>
         }
       >
