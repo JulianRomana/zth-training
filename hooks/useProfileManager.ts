@@ -7,7 +7,7 @@ const useProfileManager = () => {
   const realm = useRealm()
 
   const createProfile = useCallback(
-    ({ name }: Parameters<(typeof Profile)['generate']>[0]) => {
+    ({ name }: Parameters<(typeof Profile)['generate']>[0]) =>
       realm.write(() => {
         const { _id } = realm.create(
           'Profile',
@@ -15,9 +15,8 @@ const useProfileManager = () => {
             name,
           })
         )
-        AsyncStorage.setItem('currentProfileId', _id.toString())
-      })
-    },
+        return AsyncStorage.setItem('currentProfileId', _id.toString())
+      }),
     [realm]
   )
 

@@ -3,6 +3,7 @@ import { Button, IconButton, Text } from 'react-native-paper'
 import { useState } from 'react'
 import { COLORS } from '@/constants/colors'
 import { useProfileManager } from '@/hooks/useProfileManager'
+import { AnimatedText } from '@/components/AnimatedText'
 
 interface WorkoutDayStepProps {
   setNextStep: (step: 'NameStep' | 'FirstMealStep') => void
@@ -101,9 +102,7 @@ const WorkoutDayStep = ({ setNextStep }: WorkoutDayStepProps) => {
 
   return (
     <View style={styles.wrapper}>
-      <Text variant="headlineLarge" style={styles.title}>
-        {currentWorkout}
-      </Text>
+      <AnimatedText style={styles.title}>{currentWorkout}</AnimatedText>
 
       <Text variant="bodyLarge" style={styles.subtitle}>
         Note: Tu pourras toujours modifier les jours assignés à tes séances sur

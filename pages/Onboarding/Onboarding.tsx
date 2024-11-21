@@ -1,5 +1,5 @@
-import { useState } from 'react'
-import { SafeAreaView, StyleSheet, View } from 'react-native'
+import { useState, useRef, useEffect } from 'react'
+import { Animated, SafeAreaView, StyleSheet, View } from 'react-native'
 import { IconButton, ProgressBar } from 'react-native-paper'
 import { useRouter } from 'expo-router'
 import { FirstMealStep } from './steps/FirstMealStep'
@@ -26,10 +26,10 @@ const styles = StyleSheet.create({
 const Onboarding = () => {
   const [currentStep, setCurrentStep] =
     useState<keyof typeof STEPS_MAPPER>('NameStep')
-
-  const CurrentComponent = STEPS_MAPPER[currentStep]
+  const fadeAnim = useRef(new Animated.Value(0)).current
 
   const { push } = useRouter()
+
   const handleClose = () => {
     push('/(app)')
   }
@@ -39,6 +39,17 @@ const Onboarding = () => {
     if (step === 'WorkoutDayStep') return 0.3
     if (step === 'FirstMealStep') return 0.6
   }
+
+  useEffect(() => {
+    fadeAnim.setValue(0)
+    Animated.timing(fadeAnim, {
+      toValue: 1,
+      duration: 300,
+      useNativeDriver: true,
+    }).start()
+  }, [currentStep, fadeAnim])
+
+  const CurrentComponent = STEPS_MAPPER[currentStep]
 
   return (
     <SafeAreaView style={styles.wrapper}>
@@ -53,8 +64,26 @@ const Onboarding = () => {
           />
         )}
       </View>
-      <CurrentComponent setNextStep={setCurrentStep} />
+      <Animated.View
+        style={[
+          { flex: 1 },
+          { opacity: fadeAnim },
+          {
+            transform: [
+              {
+                scale: fadeAnim.interpolate({
+                  inputRange: [0, 1],
+                  outputRange: [0.95, 1],
+                }),
+              },
+            ],
+          },
+        ]}
+      >
+        <CurrentComponent setNextStep={setCurrentStep} />
+      </Animated.View>
     </SafeAreaView>
   )
 }
+
 export { Onboarding }

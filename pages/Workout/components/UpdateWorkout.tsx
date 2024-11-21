@@ -1,10 +1,16 @@
 import { ScrollView, StyleSheet, View, SafeAreaView } from 'react-native'
-import { Button, Surface, Text, TextInput } from 'react-native-paper'
+import {
+  Button,
+  Divider,
+  IconButton,
+  Text,
+  TextInput,
+} from 'react-native-paper'
 import { useState } from 'react'
 import { cloneDeep, set } from 'lodash-es'
 import { useRouter } from 'expo-router'
+import { format } from 'date-fns'
 import { COLORS } from '@/constants/colors'
-import { getCurrentDay } from '@/lib/date-fns'
 
 import { Exercices, WORKOUTS, WorkoutType } from '@/constants/workouts'
 import { useWorkoutManager } from '@/hooks/useWorkoutManager'
@@ -12,36 +18,64 @@ import { useWorkoutManager } from '@/hooks/useWorkoutManager'
 const styles = StyleSheet.create({
   wrapper: {
     flex: 1,
-    padding: 20,
   },
-  card: {
-    marginTop: 20,
-    padding: 8,
+  header: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
   },
+  title: {
+    textAlign: 'center',
+  },
+  date: {
+    color: COLORS.grayLighter,
+    textAlign: 'center',
+    marginBottom: 20,
+  },
+  scrollWrapper: {
+    marginBottom: 40,
+  },
+  workoutExercicesWrapper: {},
   inputWrapper: {
     flexDirection: 'row',
     alignItems: 'center',
   },
-  input: {
-    height: 20,
-    width: 40,
-    margin: 12,
-    borderWidth: 0.2,
-    borderColor: COLORS.primary,
+  divider: {
+    marginTop: 20,
+    marginBottom: 60,
+    backgroundColor: COLORS.primary,
+  },
+  exerciceTitleWrapper: {
+    flexDirection: 'row',
+    gap: 8,
+    alignItems: 'center',
+    marginBottom: 12,
+  },
+  weightInput: {
+    flex: 1,
     marginLeft: 'auto',
-    padding: 10,
+    maxWidth: 130,
+  },
+  rounded: {
+    borderRadius: 8,
+  },
+  setExercicesWrapper: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    gap: 8,
+  },
+  input: {
+    flex: 1,
+    fontSize: 14,
+    color: COLORS.primary,
+  },
+  inputAffixText: {
+    fontSize: 12,
+    color: COLORS.grayLighter,
   },
   button: {
-    marginTop: 'auto',
     marginBottom: 20,
-  },
-  separator: {
-    borderBottomColor: 'gray',
-    borderBottomWidth: StyleSheet.hairlineWidth,
-    marginBottom: 6,
-  },
-  weightAnnotation: {
-    color: COLORS.secondary,
+    marginTop: 10,
   },
 })
 
@@ -50,7 +84,6 @@ interface UpdateWorkoutModalProps {
 }
 
 const UpdateWorkoutModal = ({ workoutId }: UpdateWorkoutModalProps) => {
-  const { date } = getCurrentDay()
   const { getWorkoutById, updateWorkout } = useWorkoutManager()
   const savedWorkout = getWorkoutById(workoutId)!
 
@@ -94,78 +127,103 @@ const UpdateWorkoutModal = ({ workoutId }: UpdateWorkoutModalProps) => {
 
   return (
     <SafeAreaView style={styles.wrapper}>
-      <Text variant="headlineLarge">{workout?.title}</Text>
-      <Text variant="bodyLarge">{date}</Text>
-      <ScrollView>
+      <View style={styles.header}>
+        <IconButton icon="arrow-left" onPress={back} />
+        <Text variant="headlineLarge" style={styles.title}>
+          {workout?.title}
+        </Text>
+        <IconButton icon="arrow-left" iconColor="black" />
+      </View>
+      <Text variant="bodyLarge" style={styles.date}>
+        {format(savedWorkout.createdAt, 'dd/MM/yyyy')}
+      </Text>
+
+      <ScrollView style={styles.scrollWrapper}>
         {workoutEntries?.map(
-          ([exerciceNumber, exerciceInformations]: [
-            string,
-            Exercices['first'],
-          ]) => (
-            <Surface style={styles.card} elevation={2} key={exerciceNumber}>
-              <Text variant="headlineSmall">{exerciceInformations.name}</Text>
-              <View style={styles.inputWrapper}>
-                <Text variant="bodyLarge">Poid</Text>
+          (
+            [exerciceNumber, exerciceInformations]: [
+              string,
+              Exercices['first'],
+            ],
+            index
+          ) => (
+            <View key={exerciceNumber} style={styles.workoutExercicesWrapper}>
+              {index !== 0 && <Divider style={styles.divider} />}
+              <View style={styles.exerciceTitleWrapper}>
+                <Text variant="headlineSmall">{exerciceInformations.name}</Text>
                 <TextInput
                   value={exerciceInformations.weight}
+                  maxLength={3}
+                  style={styles.weightInput}
+                  outlineStyle={styles.rounded}
+                  label="Poids"
+                  mode="outlined"
                   keyboardType="numeric"
                   onChangeText={(value) =>
                     setInputValue(value, `${exerciceNumber}.weight`)
                   }
-                  style={styles.input}
                 />
-                <Text variant="bodyLarge">kg</Text>
               </View>
-              <View style={styles.separator} />
-              <View style={styles.inputWrapper}>
-                <Text variant="bodyLarge">Série 1</Text>
+              <View style={styles.setExercicesWrapper}>
                 <TextInput
                   value={exerciceInformations.firstSet}
-                  keyboardType="numeric"
                   onChangeText={(value) =>
                     setInputValue(value, `${exerciceNumber}.firstSet`)
                   }
                   style={styles.input}
+                  contentStyle={{ paddingRight: 0 }}
+                  maxLength={2}
+                  keyboardType="numeric"
+                  right={
+                    <TextInput.Affix
+                      text={`/ ${exerciceInformations.reps[0]} (${exerciceInformations.weight} kg)`}
+                      textStyle={styles.inputAffixText}
+                    />
+                  }
+                  label="Set 1"
+                  outlineStyle={styles.rounded}
+                  mode="outlined"
                 />
-                <Text variant="bodyLarge">{exerciceInformations.reps[0]}</Text>
-                <Text variant="bodySmall" style={styles.weightAnnotation}>
-                  ({exerciceInformations.weight}
-                  kg)
-                </Text>
-              </View>
-              <View style={styles.inputWrapper}>
-                <Text variant="bodyLarge">Série 2</Text>
                 <TextInput
                   value={exerciceInformations.secondSet}
-                  keyboardType="numeric"
                   onChangeText={(value) =>
                     setInputValue(value, `${exerciceNumber}.secondSet`)
                   }
+                  keyboardType="numeric"
+                  contentStyle={{ paddingRight: 0 }}
                   style={styles.input}
+                  right={
+                    <TextInput.Affix
+                      text={`/ ${exerciceInformations.reps[1]} (${updateWeightByFactor(exerciceInformations, 1)} kg)`}
+                      textStyle={styles.inputAffixText}
+                    />
+                  }
+                  maxLength={2}
+                  label="Set 2"
+                  outlineStyle={styles.rounded}
+                  mode="outlined"
                 />
-                <Text variant="bodyLarge">{exerciceInformations.reps[1]}</Text>
-                <Text variant="bodySmall" style={styles.weightAnnotation}>
-                  ({updateWeightByFactor(exerciceInformations, 1)}
-                  kg)
-                </Text>
-              </View>
-              <View style={styles.inputWrapper}>
-                <Text variant="bodyLarge">Série 3</Text>
                 <TextInput
+                  style={styles.input}
+                  right={
+                    <TextInput.Affix
+                      text={`/ ${exerciceInformations.reps[2]} (${updateWeightByFactor(exerciceInformations, 2)} kg)`}
+                      textStyle={styles.inputAffixText}
+                    />
+                  }
                   value={exerciceInformations.thirdSet}
+                  contentStyle={{ paddingRight: 0 }}
                   keyboardType="numeric"
                   onChangeText={(value) =>
                     setInputValue(value, `${exerciceNumber}.thirdSet`)
                   }
-                  style={styles.input}
+                  maxLength={2}
+                  label="Set 3"
+                  outlineStyle={styles.rounded}
+                  mode="outlined"
                 />
-                <Text variant="bodyLarge">{exerciceInformations.reps[2]}</Text>
-                <Text variant="bodySmall" style={styles.weightAnnotation}>
-                  ({updateWeightByFactor(exerciceInformations, 2)}
-                  kg)
-                </Text>
               </View>
-            </Surface>
+            </View>
           )
         )}
       </ScrollView>

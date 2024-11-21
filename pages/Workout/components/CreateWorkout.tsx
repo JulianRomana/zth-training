@@ -63,6 +63,7 @@ const CreateWorkoutModal = ({ setWorkoutId }: CreateWorkoutModalProps) => {
     })
     setWorkoutId(workoutId.toString())
   }
+
   return (
     <SafeAreaView style={styles.wrapper}>
       <View style={styles.header}>

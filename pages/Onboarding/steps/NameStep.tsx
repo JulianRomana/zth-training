@@ -27,7 +27,7 @@ const styles = StyleSheet.create({
   inputWrapper: {
     width: '100%',
     maxWidth: 350,
-    marginTop: 104,
+    marginTop: 84,
   },
   input: {
     paddingVertical: 8,
@@ -35,7 +35,7 @@ const styles = StyleSheet.create({
   button: {
     marginTop: 'auto',
     marginBottom: 32,
-    paddingHorizontal: 24,
+    paddingHorizontal: 12,
     paddingVertical: 4,
   },
   radius: { borderRadius: 8 },
@@ -45,11 +45,9 @@ const NameStep = ({ setNextStep }: NameStepProps) => {
   const [name, setName] = useState('')
   const { createProfile } = useProfileManager()
 
-  const handleNextStep = () => {
-    createProfile({ name })
-    setTimeout(() => {
-      setNextStep('WorkoutDayStep')
-    }, 200)
+  const handleNextStep = async () => {
+    await createProfile({ name })
+    setNextStep('WorkoutDayStep')
   }
 
   return (
