@@ -65,6 +65,8 @@ const styles = StyleSheet.create({
     gap: 8,
   },
   input: {
+    position: 'relative',
+    zIndex: 100,
     flex: 1,
     fontSize: 14,
     color: COLORS.primary,
@@ -72,10 +74,14 @@ const styles = StyleSheet.create({
   inputAffixText: {
     fontSize: 12,
     color: COLORS.grayLighter,
+    pointerEvents: 'none',
   },
   button: {
     marginBottom: 20,
     marginTop: 10,
+  },
+  noPaddingRight: {
+    paddingRight: 0,
   },
 })
 
@@ -159,6 +165,12 @@ const UpdateWorkoutModal = ({ workoutId }: UpdateWorkoutModalProps) => {
                   label="Poids"
                   mode="outlined"
                   keyboardType="numeric"
+                  right={
+                    <TextInput.Affix
+                      text="kg"
+                      textStyle={styles.inputAffixText}
+                    />
+                  }
                   onChangeText={(value) =>
                     setInputValue(value, `${exerciceNumber}.weight`)
                   }
@@ -171,12 +183,12 @@ const UpdateWorkoutModal = ({ workoutId }: UpdateWorkoutModalProps) => {
                     setInputValue(value, `${exerciceNumber}.firstSet`)
                   }
                   style={styles.input}
-                  contentStyle={{ paddingRight: 0 }}
+                  contentStyle={styles.noPaddingRight}
                   maxLength={2}
                   keyboardType="numeric"
                   right={
                     <TextInput.Affix
-                      text={`/ ${exerciceInformations.reps[0]} (${exerciceInformations.weight} kg)`}
+                      text={`/ ${exerciceInformations.reps[0]} (${exerciceInformations.weight || 0} kg)`}
                       textStyle={styles.inputAffixText}
                     />
                   }
@@ -190,7 +202,7 @@ const UpdateWorkoutModal = ({ workoutId }: UpdateWorkoutModalProps) => {
                     setInputValue(value, `${exerciceNumber}.secondSet`)
                   }
                   keyboardType="numeric"
-                  contentStyle={{ paddingRight: 0 }}
+                  contentStyle={styles.noPaddingRight}
                   style={styles.input}
                   right={
                     <TextInput.Affix
@@ -212,7 +224,7 @@ const UpdateWorkoutModal = ({ workoutId }: UpdateWorkoutModalProps) => {
                     />
                   }
                   value={exerciceInformations.thirdSet}
-                  contentStyle={{ paddingRight: 0 }}
+                  contentStyle={styles.noPaddingRight}
                   keyboardType="numeric"
                   onChangeText={(value) =>
                     setInputValue(value, `${exerciceNumber}.thirdSet`)
